@@ -16,6 +16,9 @@ make speckit-install
 
 # 특정 버전 설치
 SPECKIT_VERSION=0.2.0 make speckit-install
+
+# 사용 가능한 버전 확인 (예시)
+pip index versions speckit
 ```
 
 ### 초기화 및 검증

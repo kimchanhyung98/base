@@ -6,6 +6,9 @@ SPECKIT_BIN := $(VENV)/bin/speckit
 SPECKIT_SPEC := speckit
 
 ifneq ($(strip $(SPECKIT_VERSION)),)
+ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '^[0-9A-Za-z_.+-]+$$' >/dev/null && echo valid),valid)
+$(error SPECKIT_VERSION must match ^[0-9A-Za-z_.+-]+$$ (example: 0.2.0))
+endif
 SPECKIT_SPEC := speckit==$(SPECKIT_VERSION)
 endif
 
@@ -27,4 +30,4 @@ speckit-check: $(SPECKIT_BIN)
 	$(SPECKIT_BIN) check
 
 speckit-clean:
-	rm -rf $(VENV) || true
+	rm -rf $(VENV)
