@@ -4,17 +4,19 @@ PIP := $(VENV)/bin/pip
 SPECKIT_VERSION ?=
 SPECKIT_BIN := $(VENV)/bin/speckit
 SPECKIT_SPEC := speckit
+# Semver-like: major.minor.patch with optional dot-separated pre-release identifiers.
 SPECKIT_SEMVER_REGEX := ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+(\.[A-Za-z0-9]+)*)?$$
+SPECKIT_VERSION_CLEAN := $(strip $(SPECKIT_VERSION))
 
-ifneq ($(strip $(SPECKIT_VERSION)),)
+ifneq ($(SPECKIT_VERSION_CLEAN),)
 # Require a semver-like value; optional suffix is dot-separated alphanumeric identifiers.
-ifneq ($(findstring ..,$(SPECKIT_VERSION)),)
+ifneq ($(findstring ..,$(SPECKIT_VERSION_CLEAN)),)
 $(error SPECKIT_VERSION cannot contain consecutive dots)
 endif
-ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '$(SPECKIT_SEMVER_REGEX)' >/dev/null && echo valid),valid)
+ifneq ($(shell echo "$(SPECKIT_VERSION_CLEAN)" | grep -E '$(SPECKIT_SEMVER_REGEX)' >/dev/null && echo valid),valid)
 $(error SPECKIT_VERSION must be semver-like (e.g., 0.2.0 or 1.2.3-rc.1; suffix is dot-separated alphanumeric identifiers))
 endif
-SPECKIT_SPEC := speckit==$(SPECKIT_VERSION)
+SPECKIT_SPEC := speckit==$(SPECKIT_VERSION_CLEAN)
 endif
 
 .PHONY: speckit-install speckit-init speckit-check speckit-clean
