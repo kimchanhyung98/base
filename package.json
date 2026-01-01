@@ -1,16 +1,8 @@
 {
   "name": "base",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "prepare": "husky install",
-    "lint": "echo \"lint: no lint configured\"",
-    "test": "echo \"test: no tests configured\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Base project template with automated Git hooks and commit validation",
+  "author": "kimchanhyung98",
   "devDependencies": {
     "husky": "^9.1.7"
   }

@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
-npm test || exit 1
+
+node .husky/validate-branch.cjs
