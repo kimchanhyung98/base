@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 commit_msg_file="$1"
-pattern='^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert|ops)(\([^)]+\))?: .+'
+pattern='^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert|ops)(\([a-zA-Z0-9_-]+\))?: .+'
 
 if ! grep -iqE "$pattern" "$commit_msg_file"; then
   printf "\n⛔️ Commit message must follow Conventional Commits (e.g., feat: add feature, fix(parser): handle case).\n" >&2
