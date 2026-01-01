@@ -1,8 +1,10 @@
 # base
 
-## Speckit 사용 방법
+## Speckit 사용 방법 / Quick Guide
 
 Speckit CLI를 프로젝트 내에서 동일하게 사용할 수 있도록 Makefile로 래핑했습니다. Python 3와 make만 있으면 됩니다.
+
+Speckit commands are wrapped in the Makefile so you can install and run them consistently with only Python 3 and make.
 
 ### 설치
 

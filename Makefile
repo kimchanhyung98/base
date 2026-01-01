@@ -3,6 +3,11 @@ VENV ?= .venv
 PIP := $(VENV)/bin/pip
 SPECKIT_VERSION ?=
 SPECKIT_BIN := $(VENV)/bin/speckit
+SPECKIT_SPEC := speckit
+
+ifneq ($(strip $(SPECKIT_VERSION)),)
+SPECKIT_SPEC := speckit==$(SPECKIT_VERSION)
+endif
 
 .PHONY: speckit-install speckit-init speckit-check speckit-clean
 
@@ -11,7 +16,7 @@ $(VENV)/bin/python:
 	$(PIP) install --upgrade pip setuptools wheel
 
 $(SPECKIT_BIN): $(VENV)/bin/python
-	$(PIP) install speckit$(if $(SPECKIT_VERSION),==$(SPECKIT_VERSION),)
+	$(PIP) install $(SPECKIT_SPEC)
 
 speckit-install: $(SPECKIT_BIN)
 
@@ -22,4 +27,4 @@ speckit-check: $(SPECKIT_BIN)
 	$(SPECKIT_BIN) check
 
 speckit-clean:
-	rm -rf $(VENV)
+	rm -rf $(VENV) || true
