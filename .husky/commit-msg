@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
 commit_msg_file="$1"
 pattern='^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert|ops)(\([^)]+\))?: .+'
