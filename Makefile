@@ -4,11 +4,12 @@ PIP := $(VENV)/bin/pip
 SPECKIT_VERSION ?=
 SPECKIT_BIN := $(VENV)/bin/speckit
 SPECKIT_SPEC := speckit
+SPECKIT_SEMVER_REGEX := ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+(-[A-Za-z0-9]+)*)?$$
 
 ifneq ($(strip $(SPECKIT_VERSION)),)
-# Require a simple semver-like value (optional suffix segments separated by hyphens)
-ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+(-[A-Za-z0-9]+)*)?$$' >/dev/null && echo valid),valid)
-$(error SPECKIT_VERSION must be semver-like (e.g., 0.2.0 or 1.2.3-rc-1; suffix letters/numbers/hyphens, no dots))
+# Require a semver-like value; optional suffix is hyphen-separated alphanumeric segments (no dots).
+ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '$(SPECKIT_SEMVER_REGEX)' >/dev/null && echo valid),valid)
+$(error SPECKIT_VERSION must be semver-like (e.g., 0.2.0 or 1.2.3-rc-1; suffix is hyphen-separated alphanumeric segments, no dots))
 endif
 SPECKIT_SPEC := speckit==$(SPECKIT_VERSION)
 endif
