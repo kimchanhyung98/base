@@ -7,9 +7,8 @@ pnpm-debug.log*
 
 # Python
 __pycache__/
-*.py[cod]
-*.pyd
-*.pyo
+*.py[co]
+*$py.class
 
 # Java
 *.class
