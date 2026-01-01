@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+commit_msg_file="$1"
+pattern='^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert|ops)(\([^)]+\))?: .+'
+
+if ! grep -iqE "$pattern" "$commit_msg_file"; then
+  echo "\n⛔️ Commit message must follow Conventional Commits (e.g., feat: add feature, fix(parser): handle case)." >&2
+  exit 1
+fi
