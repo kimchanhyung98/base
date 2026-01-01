@@ -6,8 +6,9 @@ SPECKIT_BIN := $(VENV)/bin/speckit
 SPECKIT_SPEC := speckit
 
 ifneq ($(strip $(SPECKIT_VERSION)),)
-ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '^[0-9A-Za-z_.+-]+$$' >/dev/null && echo valid),valid)
-$(error SPECKIT_VERSION must match ^[0-9A-Za-z_.+-]+$$ (example: 0.2.0))
+# Require a simple semver-like value (e.g., 1.2.3 or 1.2.3-rc.1)
+ifneq ($(shell echo "$(SPECKIT_VERSION)" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+([A-Za-z0-9\.-]*)$$' >/dev/null && echo valid),valid)
+$(error SPECKIT_VERSION must look like 1.2.3 or 1.2.3-rc.1)
 endif
 SPECKIT_SPEC := speckit==$(SPECKIT_VERSION)
 endif
