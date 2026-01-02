@@ -32,6 +32,7 @@ Coding agent, MCP configuration:
       "type": "local",
       "command": "npx",
       "args": [
+        "-y",
         "@playwright/mcp@latest"
       ],
       "tools": [
