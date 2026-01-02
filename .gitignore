@@ -26,6 +26,13 @@ jspm_packages/
 node_modules/
 vendor/
 
+*.class
+*.jar
+*.war
+*.ear
+target/
+hs_err_pid*
+
 # env
 .env
 .env.bak
@@ -57,7 +64,6 @@ venv.bak/
 *.sqlite
 
 # Docker
-.dockerignore
 Dockerfile.local
 docker-compose.override.yml
 docker-compose.local.yml
@@ -84,6 +90,7 @@ docker-compose.local.yml
 *.pfx
 secrets/
 .secrets
+.secrets/
 auth.json
 credentials.json
 
@@ -103,8 +110,6 @@ credentials.json
 
 # OS
 .AppleDouble
-.DS_Store
-.DS_Store?
 .DS_Store*
 .LSOverride
 .Spotlight-V100
@@ -115,7 +120,6 @@ Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-Icon
 Icon?
 *.stackdump
 [Dd]esktop.ini
