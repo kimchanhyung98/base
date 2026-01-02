@@ -3,7 +3,7 @@
 const fs = require('fs');
 
 // 허용 규칙
-const validTypes = ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'chore'];
+const validTypes = ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'chore', 'build', 'ci', 'revert'];
 const validPattern = '<type>(scope): <subject> or <type>: <subject>';
 
 // 커밋 메시지 파일 확인
@@ -27,8 +27,8 @@ if (commitMsg.startsWith('Merge')) {
     process.exit(0);
 }
 
-// 패턴: `type(scope): subject` or `type: subject` (scope는 선택 사항)
-const commitPattern = new RegExp(`^(${validTypes.join('|')})(\\(.+\\))?:\\s.+`);
+// 패턴: `type(scope): subject` or `type: subject` (scope는 선택 사항, 최소 2글자)
+const commitPattern = new RegExp(`^(${validTypes.join('|')})(\\([a-zA-Z0-9_-]{2,}\\))?:\\s.+`);
 
 if (!commitPattern.test(commitMsg)) {
     console.error(`* 잘못된 형식 : ${commitMsg}`);

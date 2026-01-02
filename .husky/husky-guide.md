@@ -17,6 +17,9 @@
 | `refactor` | 코드 리팩토링 | `refactor(auth): 로직 개선` |
 | `test` | 테스트 추가/수정 | `test: 유닛 테스트 추가` |
 | `chore` | 빌드/설정 변경 | `chore: 의존성 업데이트` |
+| `build` | 빌드 시스템/외부 의존성 변경 | `build: webpack 설정 업데이트` |
+| `ci` | CI 설정 파일/스크립트 변경 | `ci: GitHub Actions 워크플로우 추가` |
+| `revert` | 이전 커밋 되돌리기 | `revert: feat(auth) 커밋 되돌림` |
 
 ### 예시
 
