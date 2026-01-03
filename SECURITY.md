@@ -2,14 +2,13 @@
 
 ## Supported Versions / 지원 버전
 
-We release patches for security vulnerabilities. Currently supported versions:
+We release patches for security vulnerabilities. As this is a base template repository, security policies apply to all active versions.
 
-보안 취약점에 대한 패치를 릴리스합니다. 현재 지원되는 버전:
+보안 취약점에 대한 패치를 릴리스합니다. 이것은 기본 템플릿 저장소이므로 보안 정책은 모든 활성 버전에 적용됩니다.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.x.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+| latest  | :white_check_mark: |
 
 ## Reporting a Vulnerability / 취약점 보고
 
@@ -111,4 +110,4 @@ Security updates will be released as patch versions and announced through:
 This security policy follows guidelines from:
 - [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories)
 - [OpenSSF Best Practices](https://openssf.org/)
-- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+- [CII Best Practices Badge Program](https://bestpractices.coreinfrastructure.org/)
