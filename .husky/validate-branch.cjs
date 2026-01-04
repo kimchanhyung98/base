@@ -22,8 +22,8 @@ if (protectedBranches.includes(currentBranch)) {
 }
 
 // 패턴: `type/description` 또는 `type/domain/description`
-// 허용: 소문자, 숫자, 특수문자 (단, 대문자/언더스코어/공백/슬래시 제외)
-const branchPattern = new RegExp(`^(${validTypes.join('|')})\\/[a-z0-9][^A-Z_\\s\\/]*(\\/[a-z0-9][^A-Z_\\s\\/]*)?$`);
+// 허용: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.)
+const branchPattern = new RegExp(`^(${validTypes.join('|')})\\/[a-z0-9][a-z0-9.-]*(\\/[a-z0-9][a-z0-9.-]*)?$`);
 if (!branchPattern.test(currentBranch)) {
     console.error(`* 잘못된 형식 : ${currentBranch}`);
     console.error(`* 올바른 형식 : ${validPattern}`);

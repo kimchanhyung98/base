@@ -24,8 +24,8 @@ jobs:
           VALID_TYPES="feature|fix|hotfix|release|refactor|docs|test|chore|style|copilot|claude"
 
           # 패턴: type/description 또는 type/domain/description
-          # 허용: 소문자, 숫자, 특수문자 (단, 대문자/언더스코어/공백/슬래시 제외)
-          PATTERN="^(${VALID_TYPES})/[a-z0-9][^A-Z_[:space:]/]*(/[a-z0-9][^A-Z_[:space:]/]*)?$"
+          # 허용: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.)
+          PATTERN="^(${VALID_TYPES})/[a-z0-9][a-z0-9.-]*(/[a-z0-9][a-z0-9.-]*)?$"
 
           if [[ ! "$BRANCH" =~ $PATTERN ]]; then
             echo "❌ Invalid branch name: $BRANCH"
@@ -36,8 +36,7 @@ jobs:
             echo ""
             echo "Description rules:"
             echo "  - Must start with a lowercase letter or number"
-            echo "  - Can contain lowercase letters, numbers, and special characters"
-            echo "  - Cannot contain: uppercase letters, underscores, spaces, or slashes"
+            echo "  - Allowed characters: lowercase letters (a-z), numbers (0-9), hyphens (-), dots (.)"
             echo ""
             echo "Examples:"
             echo "  ✓ feature/user-authentication"
