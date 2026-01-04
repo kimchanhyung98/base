@@ -57,7 +57,7 @@ init: ## Setup Project environment (Docker required)
 		docker compose up -d; \
 	fi; \
 	echo "Installing npm packages"; \
-	docker run --rm -v $$(pwd):/app -w /app node:22-alpine npm install; \
+	docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"; \
 
 %:
 	@:
