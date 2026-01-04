@@ -52,12 +52,12 @@ init: ## Setup Project environment (Docker required)
 		echo "Copying .env.example to .env"; \
 		cp .env.example .env; \
 	fi; \
-	echo "Starting Docker containers"; \
-	docker compose up -d; \
+	if [ ! -f docker-compose.yml ]; then \
+		echo "Starting Docker containers"; \
+		docker compose up -d; \
+	fi; \
 	echo "Installing npm packages"; \
 	docker run --rm -v $$(pwd):/app -w /app node:22-alpine npm install; \
-	echo "Running database migrations and seeders"; \
-	docker compose exec laravel.test php artisan migrate --seed
 
 %:
 	@:
