@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check branch name
+        env:
+          BRANCH: ${{ github.head_ref }}
         run: |
-          BRANCH="${{ github.head_ref }}"
-
           echo "Checking branch name: $BRANCH"
 
           # 보호 브랜치는 검사하지 않음
@@ -29,24 +29,6 @@ jobs:
 
           if [[ ! "$BRANCH" =~ $PATTERN ]]; then
             echo "❌ Invalid branch name: $BRANCH"
-            echo ""
-            echo "Branch name must follow the pattern: <type>/<description> or <type>/<domain>/<description>"
-            echo ""
-            echo "Valid types: feature, fix, hotfix, release, refactor, docs, test, chore, style, copilot, claude"
-            echo ""
-            echo "Description rules:"
-            echo "  - Must start with a lowercase letter or number"
-            echo "  - Allowed characters: lowercase letters (a-z), numbers (0-9), hyphens (-), dots (.)"
-            echo ""
-            echo "Examples:"
-            echo "  ✓ feature/user-authentication"
-            echo "  ✓ release/1.0.0"
-            echo "  ✓ fix/404-error"
-            echo "  ✓ feature/frontend/user-authentication"
-            echo "  ✗ Feature/Frontend/User-auth (uppercase not allowed)"
-            echo "  ✗ feature/add_function (underscore not allowed)"
-            echo "  ✗ feature/a/b/c (max 3 levels)"
-            echo "  ✗ my-feature (missing type)"
             exit 1
           fi
 
