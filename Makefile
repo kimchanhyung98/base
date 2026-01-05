@@ -52,7 +52,7 @@ init: ## Setup Project environment (Docker required)
 		echo "Copying .env.example to .env"; \
 		cp .env.example .env; \
 	fi; \
-	if [ ! -f docker-compose.yml ]; then \
+	if [ -f docker-compose.yml ]; then \
 		echo "Starting Docker containers"; \
 		docker compose up -d; \
 	fi; \
