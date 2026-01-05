@@ -1,47 +1,10 @@
-# Husky Git Hooks 가이드
+# 브랜치명 검증 가이드
 
-## commit-msg (커밋 메시지 검증)
-
-**실행 시점**: `git commit` 시 (커밋 생성 전)
-**스크립트**: `validate-commit.cjs`
-**형식**: `<type>(scope): <subject>` 또는 `<type>: <subject>`
-
-### 허용 타입
-
-| 타입         | 설명               | 예시                            |
-|------------|------------------|-------------------------------|
-| `feat`     | 새로운 기능 추가        | `feat: 사용자 인증 추가`             |
-| `fix`      | 버그 수정            | `fix(api): null 응답 처리`        |
-| `docs`     | 문서 수정            | `docs: 설치 가이드 업데이트`           |
-| `style`    | 코드 스타일 변경        | `style: 코드 포맷팅`               |
-| `refactor` | 코드 리팩토링          | `refactor(auth): 로직 개선`       |
-| `test`     | 테스트 추가/수정        | `test: 유닛 테스트 추가`             |
-| `chore`    | 빌드/설정 변경         | `chore: 의존성 업데이트`             |
-| `build`    | 빌드 시스템/외부 의존성 변경 | `build: webpack 설정 업데이트`      |
-| `ci`       | CI 설정 파일/스크립트 변경 | `ci: GitHub Actions 워크플로우 추가` |
-| `revert`   | 이전 커밋 되돌리기       | `revert: feat(auth) 커밋 되돌림`   |
-
-### 예시
-
-```bash
-✅ feat: 사용자 인증 추가
-✅ feat(auth): JWT 토큰 검증 추가
-✅ fix(api): null 응답 처리
-✅ docs: 설치 가이드 업데이트
-
-❌ Add feature          # 타입 누락
-❌ feat add feature     # 콜론 누락
-❌ feat(): 기능 추가    # 빈 scope
-```
-
-## pre-push (브랜치명 검증)
-
-**실행 시점**: `git push` 시 (푸시 전)
-**스크립트**: `validate-branch.cjs`
+**실행 시점**: Pull Request 생성/수정 시 (자동)
+**워크플로우**: `.github/workflows/branch-name-check.yml`
 **형식**: `<type>/<description>` 또는 `<type>/<domain>/<description>`
-**허용 문자**: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.)
 
-### 허용 타입
+## 허용 타입
 
 | 타입         | 설명                   | 예시                               |
 |------------|----------------------|----------------------------------|
@@ -57,11 +20,17 @@
 | `copilot`  | GitHub Copilot 지원 개발 | `copilot/add-validation`         |
 | `claude`   | Claude AI 지원 개발      | `claude/refactor-api`            |
 
-### 보호 브랜치 (직접 푸시 허용)
+## 보호 브랜치 (검사 제외)
 
 `main`, `master`, `develop`, `staging`
 
-### 예시
+## 브랜치명 규칙
+
+### ✅ 올바른 형식
+
+- **타입**: 위 표의 허용된 타입 중 하나 사용
+- **구분자**: `/` (슬래시) 사용
+- **허용 문자**: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.)
 
 #### 2단계 형식 (기본)
 
@@ -85,7 +54,7 @@
 ✅ fix/api/404-error
 ```
 
-#### 잘못된 형식
+### ❌ 잘못된 형식
 
 ```bash
 ❌ Feature/Frontend/User-auth  # 타입, 도메인, 설명에 대문자 사용 금지
@@ -94,3 +63,20 @@
 ❌ feature/a/b/c               # 4단계 이상 금지
 ❌ feature/                    # 설명 누락
 ```
+
+## 검증 계층
+
+| 계층             | 시점              | 우회 가능 여부                   |
+|----------------|-----------------|----------------------------|
+| 로컬 Husky       | `git push` 실행 시 | ✅ `--no-verify` 플래그로 우회 가능 |
+| GitHub Actions | PR 생성/수정 시      | ❌ 필수 체크 (우회 불가)            |
+
+## Branch Protection 설정 권장
+
+**Settings → Branches → Branch protection rules**
+
+1. `main` 브랜치에 보호 규칙 추가
+2. **Require status checks to pass before merging** 활성화
+3. **validate-branch-name** 체크 필수로 지정
+
+이렇게 설정하면 브랜치명 규칙을 위반한 PR은 병합할 수 없습니다.
