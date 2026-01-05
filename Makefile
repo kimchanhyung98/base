@@ -1,4 +1,4 @@
-.PHONY: spec-kit agent-os help init
+.PHONY: spec-kit agent-os help init docker-init
 
 .DEFAULT_GOAL := help
 
@@ -39,25 +39,39 @@ agent-os: ## Install agent-os (default: claude)
 		yes | bash "$$script" --claude-code-commands false --use-claude-code-subagents false --standards-as-claude-code-skills true --agent-os-commands true; \
 	fi
 
-init: ## Setup Project environment (Docker required)
+init: ## Setup development environment
+	@echo "Installing npm packages"; \
+	if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then \
+		docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"; \
+	elif command -v npm >/dev/null 2>&1; then \
+		npm install; \
+	else \
+		echo "[init] Neither 'docker' nor 'npm' found. Please install Docker or Node.js/npm."; \
+		exit 1; \
+	fi; \
+	echo "Setup complete! Git hooks installed via husky."
+
+docker-init: ## Setup Docker-based development environment (Docker required)
 	@if ! command -v docker >/dev/null 2>&1; then \
-		echo "[init] 'docker' not found"; \
+		echo "[docker-init] 'docker' not found"; \
 		exit 1; \
 	fi; \
 	if ! docker compose version >/dev/null 2>&1; then \
-		echo "[init] 'docker compose' not found"; \
+		echo "[docker-init] 'docker compose' not found"; \
 		exit 1; \
 	fi; \
-	if [ ! -f .env ]; then \
+	if [ ! -f .env ] && [ -f .env.example ]; then \
 		echo "Copying .env.example to .env"; \
 		cp .env.example .env; \
 	fi; \
 	if [ -f docker-compose.yml ]; then \
 		echo "Starting Docker containers"; \
 		docker compose up -d; \
+	else \
+		echo "[docker-init] docker-compose.yml not found"; \
 	fi; \
 	echo "Installing npm packages"; \
-	docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"; \
+	docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
 
 %:
 	@:
