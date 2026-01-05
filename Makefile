@@ -49,7 +49,7 @@ init: ## Setup development environment
 		echo "[init] Neither 'docker' nor 'npm' found. Please install Docker or Node.js/npm."; \
 		exit 1; \
 	fi; \
-	echo "Setup complete! Git hooks installed via husky."
+	echo "Setup complete!"
 
 docker-init: ## Setup Docker-based development environment (Docker required)
 	@if ! command -v docker >/dev/null 2>&1; then \
@@ -67,11 +67,12 @@ docker-init: ## Setup Docker-based development environment (Docker required)
 	if [ -f docker-compose.yml ]; then \
 		echo "Starting Docker containers"; \
 		docker compose up -d; \
+		echo "Installing npm packages"; \
+		docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"; \
 	else \
-		echo "[docker-init] docker-compose.yml not found"; \
-	fi; \
-	echo "Installing npm packages"; \
-	docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
+		echo "[docker-init] docker-compose.yml not found. This target requires docker-compose.yml."; \
+		exit 1; \
+	fi
 
 %:
 	@:
