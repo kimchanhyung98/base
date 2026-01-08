@@ -27,8 +27,8 @@ if (commitMsg.startsWith('Merge')) {
     process.exit(0);
 }
 
-// 패턴: `type(scope): subject` or `type: subject` (scope는 선택 사항, 최소 2글자)
-const commitPattern = new RegExp(`^(${validTypes.join('|')})(\\([a-zA-Z0-9_-]{2,}\\))?:\\s.+`);
+// 패턴: `type(scope): subject` or `type: subject` (scope는 선택 사항, 소문자만 허용)
+const commitPattern = new RegExp(`^(${validTypes.join('|')})(\\([a-z0-9_-]{2,}\\))?:\\s+\\S.*`);
 
 if (!commitPattern.test(commitMsg)) {
     console.error(`* 잘못된 형식 : ${commitMsg}`);
