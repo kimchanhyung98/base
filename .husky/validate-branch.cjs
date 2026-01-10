@@ -4,7 +4,7 @@ const {execSync} = require('child_process');
 
 // 허용 규칙
 const validTypes = ['feature', 'fix', 'hotfix', 'release', 'refactor', 'docs', 'test', 'chore', 'style', 'copilot', 'claude', 'dependabot'];
-const validPattern = '<type>/<description> 또는 <type>/<domain>/<description>';
+const validPattern = '<type>/<description> 또는 <type>/<segment>/<segment>/...';
 
 // 현재 브랜치명 확인
 let currentBranch;
@@ -21,9 +21,9 @@ if (protectedBranches.includes(currentBranch)) {
     process.exit(0);
 }
 
-// 패턴: `type/description` 또는 `type/domain/description`
+// 패턴: `type/description` 또는 `type/segment1/segment2/...` (depth 제한 없음)
 // 허용: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.), 언더바(_)
-const branchPattern = new RegExp(`^(${validTypes.join('|')})\\/[a-z0-9][a-z0-9._-]*(\\/[a-z0-9][a-z0-9._-]*)?$`);
+const branchPattern = new RegExp(`^(${validTypes.join('|')})\\/[a-z0-9][a-z0-9._-]*(\\/[a-z0-9][a-z0-9._-]*)*$`);
 if (!branchPattern.test(currentBranch)) {
     console.error(`* 잘못된 형식 : ${currentBranch}`);
     console.error(`* 올바른 형식 : ${validPattern}`);

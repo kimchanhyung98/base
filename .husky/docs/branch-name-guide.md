@@ -2,7 +2,7 @@
 
 **실행 시점**: `git push` 시 (푸시 전)
 **스크립트**: `.husky/validate-branch.cjs`
-**형식**: `<type>/<description>` 또는 `<type>/<domain>/<description>`
+**형식**: `<type>/<description>` 또는 `<type>/<segment>/<segment>/...` (depth 제한 없음)
 **허용 문자**: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.), 언더바(_)
 
 ## 허용 타입
@@ -28,26 +28,22 @@
 
 ## 브랜치명 형식
 
-### 2단계 형식 (기본)
+### ✅ 올바른 형식
 
 ```bash
-✅ feature/user-authentication
-✅ fix/404-error
-✅ copilot/add-validation
-✅ claude/refactor-api
-✅ hotfix/security-patch-2024
-✅ release/1.0.0
-```
-
-### 3단계 형식 (도메인 포함)
-
-```bash
-✅ feature/frontend/user-authentication
-✅ fix/api/null-response
-✅ refactor/backend/auth-logic
-✅ docs/api/endpoint-guide
-✅ test/integration/payment-flow
-✅ dependabot/npm_and_yarn/turbo-2.7.3
+feature/user-authentication
+fix/404-error
+copilot/add-validation
+claude/refactor-api
+hotfix/security-patch-2024
+release/1.0.0
+feature/frontend/user-authentication
+fix/api/null-response
+refactor/backend/auth-logic
+docs/api/endpoint-guide
+test/integration/payment-flow
+dependabot/npm_and_yarn/turbo-2.7.3
+dependabot/npm_and_yarn/tailwindcss/postcss-4.1.18
 ```
 
 ### ❌ 잘못된 형식
@@ -55,7 +51,6 @@
 ```bash
 Feature/Frontend/User-auth  # 대문자 사용 금지
 my-feature                  # 타입 누락
-feature/a/b/c               # 4단계 이상 금지
 feature/                    # 설명 누락
 ```
 
