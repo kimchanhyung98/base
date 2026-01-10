@@ -37,7 +37,6 @@
 ✅ claude/refactor-api
 ✅ hotfix/security-patch-2024
 ✅ release/1.0.0
-✅ dependabot/npm_and_yarn/turbo-2.7.3
 ```
 
 ### 3단계 형식 (도메인 포함)
@@ -48,6 +47,7 @@
 ✅ refactor/backend/auth-logic
 ✅ docs/api/endpoint-guide
 ✅ test/integration/payment-flow
+✅ dependabot/npm_and_yarn/turbo-2.7.3
 ```
 
 ### ❌ 잘못된 형식

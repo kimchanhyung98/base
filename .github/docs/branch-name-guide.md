@@ -52,7 +52,7 @@
 ✅ refactor/backend/auth-logic
 ✅ docs/api/endpoint-guide
 ✅ test/integration/payment-flow
-✅ fix/api/404-error
+✅ dependabot/npm_and_yarn/turbo-2.7.3
 ```
 
 ### ❌ 잘못된 형식
