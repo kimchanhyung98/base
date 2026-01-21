@@ -163,10 +163,16 @@ function isCommandAvailable(command) {
         return false;
     }
     try {
-        execSync('which ' + command, {stdio: 'ignore'});
+        execSync('which', [command], {stdio: 'ignore'});
         return true;
     } catch {
-        return false;
+        // which 명령어 배열 형식이 지원되지 않는 경우 shell 호출
+        try {
+            execSync(`command -v ${command}`, {stdio: 'ignore', shell: true});
+            return true;
+        } catch {
+            return false;
+        }
     }
 }
 
@@ -180,8 +186,7 @@ function escapeAppleScript(str) {
         .replace(/\\/g, '\\\\')
         .replace(/"/g, '\\"')
         .replace(/\n/g, '\\n')
-        .replace(/\r/g, '\\r')
-        .replace(/`/g, "'");
+        .replace(/\r/g, '\\r');
 }
 
 /**
@@ -307,13 +312,12 @@ function completeTask(sessionId, result = {}) {
     const commit = getLastCommitInfo();
     const endTime = new Date();
     const durationMs = endTime - new Date(state.startTime);
-    const durationSec = Math.round(durationMs / 1000);
 
     const title = '✅ Claude 작업 완료';
     const message = [
         `📁 ${state.repo}/${state.branch}`,
         `📝 ${state.taskType}`,
-        `⏱️ ${durationSec}초`,
+        `⏱️ ${Math.round(durationMs / 1000)}초`,
         commit.message !== 'unknown' ? `💬 ${commit.message}` : ''
     ].filter(Boolean).join('\n');
 
@@ -322,17 +326,16 @@ function completeTask(sessionId, result = {}) {
     state.status = 'completed';
     state.endTime = endTime.toISOString();
     state.durationMs = durationMs;
-    state.durationSec = durationSec;
     state.result = result;
     state.commit = commit;
     saveSessionState(sessionId, state);
 
-    console.log(`[Claude Task] 작업 완료: ${state.taskType} (${durationSec}초)`);
+    console.log(`[Claude Task] 작업 완료: ${state.taskType} (${Math.round(durationMs / 1000)}초)`);
 
-    // 완료된 세션 정리 (지연)
-    setTimeout(() => {
+    // 완료된 세션 정리 (비동기, 프로세스 종료 차단 안 함)
+    setImmediate(() => {
         deleteSessionState(sessionId);
-    }, 5000);
+    });
 }
 
 /**
@@ -349,7 +352,6 @@ function failTask(sessionId, error) {
 
     const endTime = new Date();
     const durationMs = endTime - new Date(state.startTime);
-    const durationSec = Math.round(durationMs / 1000);
 
     const title = '❌ Claude 작업 실패';
     const message = [
@@ -363,16 +365,15 @@ function failTask(sessionId, error) {
     state.status = 'failed';
     state.endTime = endTime.toISOString();
     state.durationMs = durationMs;
-    state.durationSec = durationSec;
     state.error = error;
     saveSessionState(sessionId, state);
 
     console.log(`[Claude Task] 작업 실패: ${state.taskType} - ${error}`);
 
-    // 실패한 세션 정리 (지연)
-    setTimeout(() => {
+    // 실패한 세션 정리 (비동기, 프로세스 종료 차단 안 함)
+    setImmediate(() => {
         deleteSessionState(sessionId);
-    }, 5000);
+    });
 }
 
 /**
