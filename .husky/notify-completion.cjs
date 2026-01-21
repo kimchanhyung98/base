@@ -148,17 +148,55 @@ function getLastCommitInfo() {
 }
 
 /**
+ * 허용된 알림 명령어 목록
+ */
+const ALLOWED_COMMANDS = ['osascript', 'notify-send'];
+
+/**
  * 알림 도구 사용 가능 여부 확인
  * @param {string} command - 확인할 명령어
  * @returns {boolean} 사용 가능 여부
  */
 function isCommandAvailable(command) {
+    // 허용된 명령어만 확인
+    if (!ALLOWED_COMMANDS.includes(command)) {
+        return false;
+    }
     try {
-        execSync(`which ${command}`, {stdio: 'ignore'});
+        execSync('which ' + command, {stdio: 'ignore'});
         return true;
     } catch {
         return false;
     }
+}
+
+/**
+ * AppleScript용 문자열 이스케이프
+ * @param {string} str - 이스케이프할 문자열
+ * @returns {string} 이스케이프된 문자열
+ */
+function escapeAppleScript(str) {
+    return str
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/`/g, "'");
+}
+
+/**
+ * XML용 문자열 이스케이프
+ * @param {string} str - 이스케이프할 문자열
+ * @returns {string} 이스케이프된 문자열
+ */
+function escapeXml(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
+        .replace(/\n/g, '&#10;');
 }
 
 /**
@@ -177,12 +215,16 @@ function sendNotification(title, message) {
                 console.log('[알림] osascript를 찾을 수 없습니다.');
                 return false;
             }
-            const script = `display notification "${message.replace(/"/g, '\\"')}" with title "${title.replace(/"/g, '\\"')}"`;
+            const escapedTitle = escapeAppleScript(title);
+            const escapedMessage = escapeAppleScript(message);
+            const script = `display notification "${escapedMessage}" with title "${escapedTitle}"`;
             const child = spawn('osascript', ['-e', script], {detached: true, stdio: 'ignore'});
             child.on('error', () => {}); // 오류 무시
             child.unref();
         } else if (platform === 'win32') {
             // Windows (PowerShell)
+            const escapedTitle = escapeXml(title);
+            const escapedMessage = escapeXml(message);
             const psScript = `
                 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
                 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -190,8 +232,8 @@ function sendNotification(title, message) {
                 <toast>
                     <visual>
                         <binding template="ToastText02">
-                            <text id="1">${title.replace(/"/g, '`"')}</text>
-                            <text id="2">${message.replace(/"/g, '`"')}</text>
+                            <text id="1">${escapedTitle}</text>
+                            <text id="2">${escapedMessage}</text>
                         </binding>
                     </visual>
                 </toast>
@@ -264,13 +306,14 @@ function completeTask(sessionId, result = {}) {
 
     const commit = getLastCommitInfo();
     const endTime = new Date();
-    const duration = endTime - new Date(state.startTime);
+    const durationMs = endTime - new Date(state.startTime);
+    const durationSec = Math.round(durationMs / 1000);
 
     const title = '✅ Claude 작업 완료';
     const message = [
         `📁 ${state.repo}/${state.branch}`,
         `📝 ${state.taskType}`,
-        `⏱️ ${Math.round(duration / 1000)}초`,
+        `⏱️ ${durationSec}초`,
         commit.message !== 'unknown' ? `💬 ${commit.message}` : ''
     ].filter(Boolean).join('\n');
 
@@ -278,12 +321,13 @@ function completeTask(sessionId, result = {}) {
 
     state.status = 'completed';
     state.endTime = endTime.toISOString();
-    state.duration = duration;
+    state.durationMs = durationMs;
+    state.durationSec = durationSec;
     state.result = result;
     state.commit = commit;
     saveSessionState(sessionId, state);
 
-    console.log(`[Claude Task] 작업 완료: ${state.taskType} (${Math.round(duration / 1000)}초)`);
+    console.log(`[Claude Task] 작업 완료: ${state.taskType} (${durationSec}초)`);
 
     // 완료된 세션 정리 (지연)
     setTimeout(() => {
@@ -304,7 +348,8 @@ function failTask(sessionId, error) {
     }
 
     const endTime = new Date();
-    const duration = endTime - new Date(state.startTime);
+    const durationMs = endTime - new Date(state.startTime);
+    const durationSec = Math.round(durationMs / 1000);
 
     const title = '❌ Claude 작업 실패';
     const message = [
@@ -317,7 +362,8 @@ function failTask(sessionId, error) {
 
     state.status = 'failed';
     state.endTime = endTime.toISOString();
-    state.duration = duration;
+    state.durationMs = durationMs;
+    state.durationSec = durationSec;
     state.error = error;
     saveSessionState(sessionId, state);
 
@@ -375,6 +421,24 @@ function notify(taskType, message = '') {
     console.log(`[Claude Task] 알림 발송: ${taskType}`);
 }
 
+/**
+ * 안전한 JSON 파싱
+ * @param {string} jsonString - JSON 문자열
+ * @param {*} defaultValue - 파싱 실패 시 기본값
+ * @returns {*} 파싱된 객체 또는 기본값
+ */
+function safeJsonParse(jsonString, defaultValue = {}) {
+    if (!jsonString) {
+        return defaultValue;
+    }
+    try {
+        return JSON.parse(jsonString);
+    } catch (err) {
+        console.error(`JSON 파싱 오류: ${err.message}`);
+        return defaultValue;
+    }
+}
+
 // CLI 처리
 if (require.main === module) {
     const args = process.argv.slice(2);
@@ -383,14 +447,14 @@ if (require.main === module) {
     switch (command) {
         case 'start':
             const taskType = args[1] || 'unknown';
-            const taskInfo = args[2] ? JSON.parse(args[2]) : {};
+            const taskInfo = safeJsonParse(args[2], {});
             const sessionId = startTask(taskType, taskInfo);
             console.log(sessionId);
             break;
 
         case 'complete':
             const completeSessionId = args[1];
-            const result = args[2] ? JSON.parse(args[2]) : {};
+            const result = safeJsonParse(args[2], {});
             if (!completeSessionId) {
                 console.error('사용법: notify-completion.cjs complete <sessionId> [result]');
                 process.exit(1);
