@@ -163,16 +163,11 @@ function isCommandAvailable(command) {
         return false;
     }
     try {
-        execSync('which', [command], {stdio: 'ignore'});
+        // shell: true를 사용하여 command -v로 확인 (POSIX 호환)
+        execSync(`command -v ${command}`, {stdio: 'ignore', shell: true});
         return true;
     } catch {
-        // which 명령어 배열 형식이 지원되지 않는 경우 shell 호출
-        try {
-            execSync(`command -v ${command}`, {stdio: 'ignore', shell: true});
-            return true;
-        } catch {
-            return false;
-        }
+        return false;
     }
 }
 
