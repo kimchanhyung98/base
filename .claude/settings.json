@@ -99,7 +99,7 @@
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "companyAnnouncements": [
-    "\nWelcome to PROJECT_NAME!\nRun '/claude-hud:setup' on first launch."
+    "\nWelcome to PROJECT_NAME!\nRun 'make init' on first launch."
   ],
   "autoUpdatesChannel": "stable"
 }

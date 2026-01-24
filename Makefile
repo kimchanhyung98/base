@@ -18,34 +18,21 @@ spec-kit: ## Install spec-kit (default: claude)
 	fi; \
 	yes | specify init --here --ai $$agent --script sh
 
-agent-os: ## Install agent-os (default: claude)
-	@agent=$(word 2,$(MAKECMDGOALS)); \
-	script="$$HOME/agent-os/scripts/project-install.sh"; \
-	if [ -z "$$agent" ]; then \
-		agent="claude"; \
-		echo "Using default agent: claude"; \
-	fi; \
-	if [ ! -f "$$script" ]; then \
-		echo "[agent-os] 'agent-os' not found."; \
-		echo "RUN: curl -sSL https://raw.githubusercontent.com/buildermethods/agent-os/main/scripts/base-install.sh | bash"; \
-		exit 1; \
-	fi; \
-	echo "Installing agent-os with agent: $$agent"; \
-	if [ "$$agent" = "claude" ]; then \
-		yes | bash "$$script"; \
-	elif [ "$$agent" = "all" ]; then \
-		yes | bash "$$script" --agent-os-commands true --standards-as-claude-code-skills true; \
-	else \
-		yes | bash "$$script" --claude-code-commands false --use-claude-code-subagents false --standards-as-claude-code-skills true --agent-os-commands true; \
+init: ## Setup Project environment
+	@if command -v claude >/dev/null 2>&1; then \
+		echo "Setting up claude-hud..."; \
+		claude -p "/claude-hud:setup" --model=sonnet --dangerously-skip-permissions; \
 	fi
-
-init: ## Setup Project environment (Docker required)
 	@if ! command -v docker >/dev/null 2>&1; then \
 		echo "[init] 'docker' not found"; \
 		exit 1; \
 	fi; \
 	if ! docker compose version >/dev/null 2>&1; then \
 		echo "[init] 'docker compose' not found"; \
+		exit 1; \
+	fi; \
+	if ! docker info >/dev/null 2>&1; then \
+		echo "[init] Docker is not running. Please start Docker first."; \
 		exit 1; \
 	fi; \
 	if [ ! -f .env ]; then \
