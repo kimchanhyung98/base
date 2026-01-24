@@ -4,20 +4,9 @@
 **스크립트**: `.husky/validate-commit.cjs`
 **형식**: `<type>(scope): <subject>` 또는 `<type>: <subject>`
 
-## 허용 타입
+## 자동 제외
 
-| 타입         | 설명               | 예시                            |
-|------------|------------------|-------------------------------|
-| `feat`     | 새로운 기능 추가        | `feat: 사용자 인증 추가`             |
-| `fix`      | 버그 수정            | `fix(api): null 응답 처리`        |
-| `docs`     | 문서 수정            | `docs: 설치 가이드 업데이트`           |
-| `style`    | 코드 스타일 변경        | `style: 코드 포맷팅`               |
-| `refactor` | 코드 리팩토링          | `refactor(auth): 로직 개선`       |
-| `test`     | 테스트 추가/수정        | `test: 유닛 테스트 추가`             |
-| `chore`    | 빌드/설정 변경         | `chore: 의존성 업데이트`             |
-| `build`    | 빌드 시스템/외부 의존성 변경 | `build: webpack 설정 업데이트`      |
-| `ci`       | CI 설정 파일/스크립트 변경 | `ci: GitHub Actions 워크플로우 추가` |
-| `revert`   | 이전 커밋 되돌리기       | `revert: feat(auth) 커밋 되돌림`   |
+`Merge`, `Revert`로 시작하는 커밋은 검증하지 않습니다.
 
 ## 형식 규칙
 

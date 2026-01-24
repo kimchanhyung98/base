@@ -4,30 +4,13 @@
 **워크플로우**: `.github/workflows/branch-name-check.yml`
 **형식**: `<type>/<description>` 또는 `<type>/<segment>/<segment>/...` (depth 제한 없음)
 
-## 허용 타입
-
-| 타입           | 설명                   | 예시                               |
-|--------------|----------------------|----------------------------------|
-| `feature`    | 새로운 기능 개발            | `feature/user-authentication`    |
-| `fix`        | 버그 수정                | `fix/login-bug`                  |
-| `hotfix`     | 긴급 버그 수정             | `hotfix/critical-security-issue` |
-| `release`    | 릴리스 준비               | `release/v1.0.0`                 |
-| `refactor`   | 코드 리팩토링              | `refactor/auth-logic`            |
-| `docs`       | 문서 업데이트              | `docs/installation-guide`        |
-| `test`       | 테스트 추가               | `test/unit-tests`                |
-| `chore`      | 유지보수 작업              | `chore/update-deps`              |
-| `style`      | 스타일 개선               | `style/format-code`              |
-| `copilot`    | GitHub Copilot 지원 개발 | `copilot/add-validation`         |
-| `claude`     | Claude AI 지원 개발      | `claude/refactor-api`            |
-| `dependabot` | 의존성 업데이트             | `dependabot/npm_and_yarn`        |
-
 ## 보호 브랜치 (검사 제외)
 
 `main`, `master`, `develop`, `staging`
 
 ## 브랜치명 규칙
 
-- **타입**: 위 표의 허용된 타입 중 하나 사용
+- **타입**: 소문자 영문
 - **구분자**: `/` (슬래시) 사용
 - **허용 문자**: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.), 언더바(_)
 

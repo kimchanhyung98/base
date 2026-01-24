@@ -22,12 +22,9 @@ jobs:
             exit 0
           fi
 
-          # 허용된 타입
-          VALID_TYPES="feature|fix|hotfix|release|refactor|docs|test|chore|style|copilot|claude|dependabot"
-
           # 패턴: type/description 또는 type/segment1/segment2/... (depth 제한 없음)
           # 허용: 소문자(a-z), 숫자(0-9), 하이픈(-), 점(.), 언더바(_)
-          PATTERN="^(${VALID_TYPES})/[a-z0-9][a-z0-9._-]*(/[a-z0-9][a-z0-9._-]*)*$"
+          PATTERN="^[a-z]+/[a-z0-9][a-z0-9._-]*(/[a-z0-9][a-z0-9._-]*)*$"
 
           if [[ ! "$BRANCH" =~ $PATTERN ]]; then
             echo "❌ Invalid branch name: $BRANCH"
