@@ -12,8 +12,13 @@ get_last_prompt() {
 }
 
 notify() {
-    local message="${1:-Task completed}"
-    osascript -e "display notification \"$message\" with title \"$TITLE\" sound name \"$SOUND\""
+    local message="$1"
+    if [[ -z "$message" ]]; then
+        message="Task completed"
+    fi
+    local escaped_message="${message//\\/\\\\}"
+    escaped_message="${escaped_message//\"/\\\"}"
+    osascript -e "display notification \"$escaped_message\" with title \"$TITLE\" sound name \"$SOUND\""
 }
 
 notify "$(get_last_prompt)"
