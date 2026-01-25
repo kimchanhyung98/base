@@ -43,8 +43,7 @@ get_prompt_preview() {
 
 # Determine status based on stop reason
 get_status() {
-    local reason
-    reason=$(echo "$INPUT" | jq -r '.stop_reason // empty' 2>/dev/null)
+    local reason="$1"
 
     case "$reason" in
         end_turn)     echo "✓" ;;
@@ -57,8 +56,7 @@ get_status() {
 
 # Get sound based on context
 get_sound() {
-    local reason
-    reason=$(echo "$INPUT" | jq -r '.stop_reason // empty' 2>/dev/null)
+    local reason="$1"
 
     case "$reason" in
         end_turn)    echo "Glass" ;;
@@ -68,9 +66,10 @@ get_sound() {
 }
 
 # Main
-STATUS=$(get_status)
+REASON=$(echo "$INPUT" | jq -r '.stop_reason // empty' 2>/dev/null)
+STATUS=$(get_status "$REASON")
 PROMPT=$(get_prompt_preview)
-SOUND=$(get_sound)
+SOUND=$(get_sound "$REASON")
 
 # Build message
 if [[ -n "$PROMPT" ]]; then
@@ -83,6 +82,6 @@ fi
 escaped_message=${MESSAGE//\"/\\\"}
 escaped_title=${NOTIFY_TITLE//\"/\\\"}
 escaped_sound=${SOUND//\"/\\\"}
-osascript -e "display notification \"${escaped_message}\" with title \"${escaped_title}\" sound name \"${escaped_sound}\"
+osascript -e "display notification \"${escaped_message}\" with title \"${escaped_title}\" sound name \"${escaped_sound}\""
 
 exit 0
