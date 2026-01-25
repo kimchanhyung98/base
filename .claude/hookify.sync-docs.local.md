@@ -6,7 +6,7 @@ action: warn
 conditions:
     - field: file_path
       operator: regex_match
-      pattern: \.(php|ts|js|py|svelte|cs|rs)$
+      pattern: \.(php|ts|tsx|js|jsx|py|svelte|cs|rs)$
 ---
 
 📝 **Documentation sync required**
