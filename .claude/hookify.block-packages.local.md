@@ -6,7 +6,7 @@ action: block
 conditions:
     - field: file_path
       operator: regex_match
-      pattern: node_modules/|vendor/|\.venv/|venv/|__pycache__/|\.git/
+      pattern: (^|/)(node_modules|vendor|\.venv|venv|__pycache__|\.git)/
 ---
 
 🛑 **Dependency folder edit blocked**
