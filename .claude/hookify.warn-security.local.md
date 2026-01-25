@@ -6,7 +6,7 @@ action: warn
 conditions:
     - field: new_text
       operator: regex_match
-      pattern: console\.log\(|debugger;|var_dump\(|dd\(|print_r\(|(api[_-]?key|secret[_-]?key|password|token|auth[_-]?token)\s*[=:]\s*["'][^"']{8,}["']
+      pattern: console\.log\(|debugger;|var_dump\(|dd\(|print_r\(|(?i)(api[_-]?key|secret[_-]?key|password|token|auth[_-]?token)\s*[=:]\s*("[^"]{8,}"|'[^']{8,}')
 ---
 
 ⚠️ **Debug code or hardcoded secret detected**
