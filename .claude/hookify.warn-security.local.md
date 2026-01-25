@@ -12,6 +12,7 @@ conditions:
 ⚠️ **Debug code or hardcoded secret detected**
 
 커밋 전 확인이 필요한 패턴이 감지되었습니다:
+
 - 디버그 코드: `console.log`, `debugger`, `var_dump`, `dd`, `print_r`
 - 하드코딩된 시크릿: `api_key`, `password`, `token` 등
 
