@@ -80,6 +80,9 @@ else
 fi
 
 # Send notification
-osascript -e "display notification \"${MESSAGE}\" with title \"${NOTIFY_TITLE}\" sound name \"${SOUND}\""
+escaped_message=${MESSAGE//\"/\\\"}
+escaped_title=${NOTIFY_TITLE//\"/\\\"}
+escaped_sound=${SOUND//\"/\\\"}
+osascript -e "display notification \"${escaped_message}\" with title \"${escaped_title}\" sound name \"${escaped_sound}\"
 
 exit 0
