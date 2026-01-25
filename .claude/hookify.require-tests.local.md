@@ -1,6 +1,6 @@
 ---
 name: require-tests
-enabled: true
+enabled: false
 event: stop
 action: block
 conditions:
@@ -8,6 +8,8 @@ conditions:
       operator: not_contains
       pattern: npm test|yarn test|pnpm test|pytest|phpunit|pest|cargo test|go test
 ---
+
+# TODO : make test, make check 등으로 변경해서 사용 
 
 ⚠️ **Tests not detected in transcript**
 
