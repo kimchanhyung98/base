@@ -139,8 +139,8 @@ Icon?
 .windsurf/*
 
 # Claude
-.claude/*.local.*
 .claude/memory
+.claude/settings.local.json
 
 # GitHub
 .github/agents/*

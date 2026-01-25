@@ -11,7 +11,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\" sound name \"Glass\"'"
+            "command": ".claude/hooks/notify.sh"
           }
         ]
       }
@@ -53,7 +53,7 @@
     "gitlab@claude-plugins-official": false,
     "gopls-lsp@claude-plugins-official": false,
     "greptile@claude-plugins-official": false,
-    "hookify@claude-plugins-official": false,
+    "hookify@claude-plugins-official": true,
     "huggingface-skills@claude-plugins-official": false,
     "jdtls-lsp@claude-plugins-official": false,
     "kotlin-lsp@claude-plugins-official": false,
