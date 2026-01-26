@@ -1,87 +1,59 @@
 #!/bin/bash
-# Claude Code task completion notification
-# Enhanced version with prompt preview from history
+# Claude Code Stop Hook - 작업 완료 알림
 
 set -euo pipefail
 
-# Read stdin JSON input
 INPUT=$(cat)
-
-# Configuration
+MESSAGE_LENGTH=30
 NOTIFY_SOUND="${CLAUDE_NOTIFY_SOUND:-Glass}"
-NOTIFY_TITLE="${CLAUDE_NOTIFY_TITLE:-Claude Code}"
 HISTORY_FILE="${HOME}/.claude/history.jsonl"
-PROMPT_LENGTH=30
 
-# Extract session_id from hook input
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty' 2>/dev/null)
+get_project_name() {
+    local cwd
+    cwd=$(echo "$INPUT" | jq -r '.cwd // empty' 2>/dev/null)
+    [[ -n "$cwd" ]] && basename "$cwd" || echo "Claude Code"
+}
 
-# Get last prompt for this session from history.jsonl
-get_prompt_preview() {
-    if [[ -z "$SESSION_ID" ]] || [[ ! -f "$HISTORY_FILE" ]]; then
-        echo ""
-        return
-    fi
+get_prompt() {
+    local session_id prompt
+    session_id=$(echo "$INPUT" | jq -r '.session_id // empty' 2>/dev/null)
 
-    # Find the last entry for this session and get display field
-    local prompt
-    prompt=$(grep "\"sessionId\":\"$SESSION_ID\"" "$HISTORY_FILE" 2>/dev/null | tail -1 | jq -r '.display // empty' 2>/dev/null)
+    [[ -z "$session_id" || ! -f "$HISTORY_FILE" ]] && return
+
+    prompt=$(grep "\"sessionId\":\"$session_id\"" "$HISTORY_FILE" 2>/dev/null | tail -1 | jq -r '.display // empty' 2>/dev/null)
 
     if [[ -n "$prompt" ]]; then
-        # Remove newlines and truncate
         local cleaned
         cleaned=$(echo "$prompt" | tr '\n' ' ' | sed 's/  */ /g')
-        if [[ ${#cleaned} -gt $PROMPT_LENGTH ]]; then
-            echo "${cleaned:0:$PROMPT_LENGTH}..."
-        else
-            echo "$cleaned"
-        fi
-    else
-        echo ""
+        [[ ${#cleaned} -gt $MESSAGE_LENGTH ]] && echo "${cleaned:0:$MESSAGE_LENGTH}..." || echo "$cleaned"
     fi
 }
 
-# Determine status based on stop reason
 get_status() {
-    local reason="$1"
-
-    case "$reason" in
-        end_turn)     echo "✓" ;;
-        max_tokens)   echo "⚠" ;;
+    case "$1" in
+        end_turn)      echo "✓" ;;
+        max_tokens)    echo "⚠" ;;
         stop_sequence) echo "■" ;;
-        tool_use)     echo "⚙" ;;
-        *)            echo "●" ;;
+        tool_use)      echo "⚙" ;;
+        *)             echo "●" ;;
     esac
 }
 
-# Get sound based on context
 get_sound() {
-    local reason="$1"
-
-    case "$reason" in
-        end_turn)    echo "Glass" ;;
-        max_tokens)  echo "Basso" ;;
-        *)           echo "$NOTIFY_SOUND" ;;
+    case "$1" in
+        end_turn)   echo "Glass" ;;
+        max_tokens) echo "Basso" ;;
+        *)          echo "$NOTIFY_SOUND" ;;
     esac
 }
 
-# Main
+PROJECT_NAME=$(get_project_name)
 REASON=$(echo "$INPUT" | jq -r '.stop_reason // empty' 2>/dev/null)
 STATUS=$(get_status "$REASON")
-PROMPT=$(get_prompt_preview)
+PROMPT=$(get_prompt)
 SOUND=$(get_sound "$REASON")
 
-# Build message
-if [[ -n "$PROMPT" ]]; then
-    MESSAGE="${STATUS} ${PROMPT}"
-else
-    MESSAGE="${STATUS} Task completed"
-fi
+[[ -n "$PROMPT" ]] && MESSAGE="${STATUS} ${PROMPT}" || MESSAGE="${STATUS} 작업 완료"
 
-# Send notification
-escaped_message=${MESSAGE//\"/\\\"}
-escaped_title=${NOTIFY_TITLE//\"/\\\"}
-escaped_sound=${SOUND//\"/\\\"}
-osascript -e "display notification \"${escaped_message}\" with title \"${escaped_title}\" sound name \"${escaped_sound}\""
-
+osascript -e "display notification \"${MESSAGE//\"/\\\"}\" with title \"${PROJECT_NAME//\"/\\\"}\" sound name \"${SOUND//\"/\\\"}\""
 exit 0
