@@ -19,6 +19,8 @@ spec-kit: ## Install spec-kit (default: claude)
 	yes | specify init --here --ai $$agent --script sh
 
 init: ## Setup Project environment
+	@echo "Checking macOS permissions..."; \
+	./scripts/check-macos-permissions.sh
 	@if command -v claude >/dev/null 2>&1; then \
 		echo "Setting up claude-hud..."; \
 		claude -p "/claude-hud:setup" --model=sonnet --dangerously-skip-permissions; \
