@@ -23,6 +23,14 @@ init: ## Setup Project environment
 		echo "Setting up claude-hud..."; \
 		claude -p "/claude-hud:setup" --model=sonnet --dangerously-skip-permissions; \
 	fi
+	@if [ "$$(uname -s)" = "Darwin" ]; then \
+		echo ""; \
+		echo "[init] macOS 알림 권한 안내"; \
+		echo "  - .claude/hooks/notify.sh 알림을 위해 터미널(iTerm, Terminal 등) 앱의 알림 권한이 필요합니다."; \
+		echo "  - 시스템 설정 > 알림 > Terminal 또는 iTerm2 > 알림 허용"; \
+		echo "  - 자동 설정은 지원되지 않으니, 위 경로에서 수동으로 허용해주세요."; \
+		echo "  - Apple 가이드: https://support.apple.com/ko-kr/guide/mac-help/mchl39a47f66/mac"; \
+	fi
 	@if ! command -v docker >/dev/null 2>&1; then \
 		echo "[init] 'docker' not found"; \
 		exit 1; \
