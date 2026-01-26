@@ -139,7 +139,9 @@ Icon?
 .windsurf/*
 
 # Claude
-.claude/memory
+.claude/hooks/.permissions-checked
+.claude/memory/*
+!.claude/memory/.gitkeep
 .claude/settings.local.json
 
 # GitHub
