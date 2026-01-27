@@ -1,6 +1,6 @@
 ---
 name: sync-docs
-enabled: true
+enabled: false
 event: file
 action: warn
 conditions:
