@@ -15,7 +15,7 @@ if ! command -v terminal-notifier &>/dev/null; then
     echo ""
     echo "Claude Code 알림에 terminal-notifier가 필요합니다."
     echo "설치하시겠습니까? (n: 건너뛰기, 그 외: 설치)"
-    read -n 1 -r
+    read -n 1 -r -t 10 || true
     echo ""
 
     if [[ ! $REPLY =~ ^[Nn]$ ]]; then
