@@ -20,7 +20,9 @@ spec-kit: ## Install spec-kit (default: claude)
 
 init: ## Setup Project environment
 	@echo "Checking macOS permissions..."; \
-	./scripts/check-macos-permissions.sh
+	if [ "$(shell uname)" = "Darwin" ]; then \
+		bash scripts/check-macos-permissions.sh || true; \
+	fi
 	@if command -v claude >/dev/null 2>&1; then \
 		echo "Setting up claude-hud..."; \
 		claude -p "/claude-hud:setup" --model=sonnet --dangerously-skip-permissions; \
