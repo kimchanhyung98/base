@@ -139,6 +139,7 @@ Icon?
 .windsurf/*
 
 # Claude
+.claude/commands/speckit.*
 .claude/hooks/.permissions-checked
 .claude/memory/*
 !.claude/memory/.gitkeep
