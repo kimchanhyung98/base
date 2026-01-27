@@ -58,5 +58,5 @@ SOUND=$(get_sound "$REASON")
 
 [[ -n "$PROMPT" ]] && MESSAGE="${STATUS} ${PROMPT}" || MESSAGE="${STATUS} 작업 완료"
 
-terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$SOUND"
+terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$SOUND" -appIcon "$ICON_PATH"
 exit 0

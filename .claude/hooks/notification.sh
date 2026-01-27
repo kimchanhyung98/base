@@ -38,5 +38,5 @@ get_question() {
 PROJECT_NAME=$(get_project_name)
 MESSAGE="💬 $(get_question)"
 
-terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$NOTIFY_SOUND"
+terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$NOTIFY_SOUND" -appIcon "$ICON_PATH"
 exit 0
