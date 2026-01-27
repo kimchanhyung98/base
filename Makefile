@@ -21,7 +21,7 @@ spec-kit: ## Install spec-kit (default: claude)
 init: ## Setup Project environment
 	@echo "Checking macOS permissions..."; \
 	if [ "$(shell uname)" = "Darwin" ]; then \
-		bash scripts/check-macos-permissions.sh || true; \
+		bash .claude/hooks/check-macos-permissions.sh || true; \
 	fi
 	@if command -v claude >/dev/null 2>&1; then \
 		echo "Setting up claude-hud..."; \
