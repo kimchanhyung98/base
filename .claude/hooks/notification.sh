@@ -3,6 +3,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ICON_PATH="${SCRIPT_DIR}/claude.png"
+
 INPUT=$(cat)
 MESSAGE_LENGTH=30
 NOTIFY_SOUND="${CLAUDE_NOTIFY_SOUND:-Purr}"
@@ -35,5 +38,5 @@ get_question() {
 PROJECT_NAME=$(get_project_name)
 MESSAGE="💬 $(get_question)"
 
-osascript -e "display notification \"${MESSAGE//\"/\\\"}\" with title \"${PROJECT_NAME//\"/\\\"}\" sound name \"${NOTIFY_SOUND//\"/\\\"}\""
+terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$NOTIFY_SOUND"
 exit 0

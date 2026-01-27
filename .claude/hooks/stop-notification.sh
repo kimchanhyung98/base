@@ -3,6 +3,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ICON_PATH="${SCRIPT_DIR}/claude.png"
+
 INPUT=$(cat)
 MESSAGE_LENGTH=30
 NOTIFY_SOUND="${CLAUDE_NOTIFY_SOUND:-Glass}"
@@ -55,5 +58,5 @@ SOUND=$(get_sound "$REASON")
 
 [[ -n "$PROMPT" ]] && MESSAGE="${STATUS} ${PROMPT}" || MESSAGE="${STATUS} 작업 완료"
 
-osascript -e "display notification \"${MESSAGE//\"/\\\"}\" with title \"${PROJECT_NAME//\"/\\\"}\" sound name \"${SOUND//\"/\\\"}\""
+terminal-notifier -title "$PROJECT_NAME" -message "$MESSAGE" -sound "$SOUND"
 exit 0
