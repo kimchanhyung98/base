@@ -27,7 +27,7 @@ fi
 echo ""
 echo "Claude Code 알림을 받으려면 terminal-notifier 앱의 알림 권한이 필요합니다."
 echo "알림 설정을 여시겠습니까? (n: 건너뛰기, 그 외: 열기)"
-read -n 1 -r
+read -n 1 -r -t 10
 echo ""
 
 if [[ ! $REPLY =~ ^[Nn]$ ]]; then
