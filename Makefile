@@ -9,46 +9,46 @@ spec-kit: ## Install spec-kit (default: claude)
 	@agent=$(word 2,$(MAKECMDGOALS)); \
 	if [ -z "$$agent" ]; then \
 		agent="claude"; \
-		echo "Using default agent: claude"; \
+		echo "[spec-kit] Using default agent: claude"; \
 	fi; \
 	if ! command -v specify >/dev/null 2>&1; then \
-		echo "[spec-kit] 'specify' not found."; \
-		echo "RUN: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git"; \
+		echo "[spec-kit] 'specify' not found"; \
+		echo "[spec-kit] RUN: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git"; \
 		exit 1; \
 	fi; \
 	yes | specify init --here --ai $$agent --script sh
 
 init: ## Setup Project environment
-	@echo "Checking macOS permissions..."; \
-	if [ "$(shell uname)" = "Darwin" ]; then \
-		bash .claude/hooks/check-macos-permissions.sh || true; \
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		echo "[init] Checking macOS permissions"; \
+		bash .claude/hooks/check-permissions.sh || true; \
 	fi
 	@if command -v claude >/dev/null 2>&1; then \
-		echo "Setting up claude-hud..."; \
+		echo "[init] Setting up claude-hud"; \
 		claude -p "/claude-hud:setup" --model=sonnet --dangerously-skip-permissions; \
 	fi
 	@if ! command -v docker >/dev/null 2>&1; then \
 		echo "[init] 'docker' not found"; \
 		exit 1; \
-	fi; \
-	if ! docker compose version >/dev/null 2>&1; then \
+	fi
+	@if ! docker compose version >/dev/null 2>&1; then \
 		echo "[init] 'docker compose' not found"; \
 		exit 1; \
-	fi; \
-	if ! docker info >/dev/null 2>&1; then \
-		echo "[init] Docker is not running. Please start Docker first."; \
+	fi
+	@if ! docker info >/dev/null 2>&1; then \
+		echo "[init] Docker is not running, please start Docker first"; \
 		exit 1; \
-	fi; \
-	if [ ! -f .env ]; then \
-		echo "Copying .env.example to .env"; \
+	fi
+	@if [ ! -f .env ]; then \
+		echo "[init] Copying .env.example to .env"; \
 		cp .env.example .env; \
-	fi; \
-	if [ -f docker-compose.yml ]; then \
-		echo "Starting Docker containers"; \
+	fi
+	@if [ -f docker-compose.yml ]; then \
+		echo "[init] Starting Docker containers"; \
 		docker compose up -d; \
-	fi; \
-	echo "Installing npm packages"; \
-	docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"; \
+	fi
+	@echo "[init] Installing npm packages"
+	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
 
 %:
 	@:
