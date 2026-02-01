@@ -18,9 +18,9 @@ jobs:
           echo "PR author: $PR_AUTHOR"
           if [[ "$PR_AUTHOR" == *"[bot]"* ]]; then
             echo "✓ Bot user detected - skipping validation"
-            echo "is_bot=true" >> $GITHUB_OUTPUT
+            echo "is_bot=true" >> "$GITHUB_OUTPUT"
           else
-            echo "is_bot=false" >> $GITHUB_OUTPUT
+            echo "is_bot=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Validate branch name
