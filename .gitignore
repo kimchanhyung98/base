@@ -147,6 +147,7 @@ Icon?
 
 # GitHub
 .github/agents/*
+!.github/agents/*.agent.md
 .github/prompts/*
 
 # Agent-OS
