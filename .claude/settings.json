@@ -89,7 +89,8 @@
     "superpowers@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": false,
-    "vercel@claude-plugins-official": false
+    "vercel@claude-plugins-official": false,
+    "claude-supermemory@supermemory-plugins": true
   },
   "extraKnownMarketplaces": {
     "Mixedbread-Grep": {
@@ -102,6 +103,12 @@
       "source": {
         "source": "github",
         "repo": "jarrodwatts/claude-hud"
+      }
+    },
+    "supermemory-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "supermemoryai/claude-supermemory"
       }
     }
   },
