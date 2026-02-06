@@ -19,6 +19,10 @@ speckit: ## Install speckit (default: claude)
 	yes | specify init --here --ai "$$agent" --script sh
 
 init: ## Setup Project environment
+	@if [ ! -f .env ]; then \
+		echo "[init] .env file is required"; \
+		exit 1; \
+	fi
 	@if [ "$(shell uname)" = "Darwin" ]; then \
 		echo "[init] Checking macOS permissions"; \
 		bash .claude/hooks/check-permissions.sh || true; \
@@ -38,10 +42,6 @@ init: ## Setup Project environment
 	@if ! docker info >/dev/null 2>&1; then \
 		echo "[init] Docker is not running, please start Docker first"; \
 		exit 1; \
-	fi
-	@if [ ! -f .env ]; then \
-		echo "[init] Copying .env.example to .env"; \
-		cp .env.example .env; \
 	fi
 	@if [ -f docker-compose.yml ]; then \
 		echo "[init] Starting Docker containers"; \
