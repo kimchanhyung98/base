@@ -20,7 +20,7 @@ speckit: ## Install speckit (default: claude)
 
 init: ## Setup Project environment
 	@if [ ! -f .env ]; then \
-		echo "[init] .env file is required"; \
+		echo "[init] .env file is required. Please copy .env.example to .env and configure it."; \
 		exit 1; \
 	fi
 	@if [ "$(shell uname)" = "Darwin" ]; then \
