@@ -91,7 +91,7 @@
     "claude-supermemory@supermemory-plugins": true
   },
   "extraKnownMarketplaces": {
-    "supermemoryai": {
+    "supermemory-plugins": {
       "source": {
         "source": "github",
         "repo": "supermemoryai/claude-supermemory"
