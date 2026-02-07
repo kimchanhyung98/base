@@ -20,7 +20,11 @@ speckit: ## Install speckit (default: claude)
 
 init: ## Setup Project environment
 	@if [ ! -f .env ]; then \
-		echo "[init] .env file is required. Please copy .env.example to .env and configure it."; \
+		echo "[init] .env file is required"; \
+		exit 1; \
+	fi
+	@if [ ! -f .claude/.supermemory-claude/config.json ]; then \
+		echo "[init] .claude/.supermemory-claude/config.json file is required"; \
 		exit 1; \
 	fi
 	@if [ "$(shell uname)" = "Darwin" ]; then \
