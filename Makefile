@@ -47,6 +47,22 @@ init: ## Setup Project environment
 		echo "[init] Starting Docker containers"; \
 		docker compose up -d; \
 	fi
+	@tmp_claude=$$(mktemp); \
+	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
+	if ! curl -fsSL "$$claude_url" -o "$$tmp_claude"; then \
+		rm -f "$$tmp_claude"; \
+		echo "[init] Failed to download CLAUDE.md from $$claude_url"; \
+		exit 1; \
+	fi; \
+	if [ -f CLAUDE.md ]; then \
+		echo "[init] Appending CLAUDE.md from $$claude_url"; \
+		printf '\n' >> CLAUDE.md; \
+		cat "$$tmp_claude" >> CLAUDE.md; \
+	else \
+		echo "[init] Creating CLAUDE.md from $$claude_url"; \
+		mv "$$tmp_claude" CLAUDE.md; \
+	fi; \
+	rm -f "$$tmp_claude"
 	@echo "[init] Installing npm packages"
 	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
 
