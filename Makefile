@@ -54,7 +54,9 @@ init: ## Setup Project environment
 		echo "[init] Failed to download CLAUDE.md from $$claude_url"; \
 		exit 1; \
 	fi; \
-	if [ -f CLAUDE.md ]; then \
+	if [ -f CLAUDE.md ] && grep -qF "Behavioral guidelines to reduce common LLM coding mistakes" CLAUDE.md; then \
+		echo "[init] CLAUDE.md already contains andrej-karpathy-skills content, skipping"; \
+	elif [ -f CLAUDE.md ]; then \
 		echo "[init] Appending CLAUDE.md from $$claude_url"; \
 		printf '\n' >> CLAUDE.md; \
 		cat "$$tmp_claude" >> CLAUDE.md; \
