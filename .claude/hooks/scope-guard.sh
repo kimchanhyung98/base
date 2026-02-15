@@ -46,25 +46,24 @@ if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" ]]; then
 fi
 
 # Bash: rm 명령어의 대상 경로 검증
+# 구분자(&&, ||, ;)로 분리 후 rm으로 시작하는 실제 명령만 검증 (문자열 인자 내 오탐 방지)
 if [[ "$TOOL_NAME" == "Bash" ]]; then
   COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
   [ -z "$COMMAND" ] && exit 0
 
-  # rm 구문에서 경로 인자를 추출하여 프로젝트 범위 확인
-  if echo "$COMMAND" | grep -qE '\brm\b'; then
-    RM_CMDS=$(echo "$COMMAND" | grep -oE '\brm\s+[^;&|]+')
-    while IFS= read -r rm_cmd; do
-      [ -z "$rm_cmd" ] && continue
-      for arg in $rm_cmd; do
-        [[ "$arg" == "rm" ]] && continue
-        [[ "$arg" == -* ]] && continue
+  while IFS= read -r cmd; do
+    cmd="${cmd#"${cmd%%[![:space:]]*}"}"
+    [[ ! "$cmd" =~ ^rm[[:space:]] ]] && continue
 
-        if is_outside_project "$arg"; then
-          deny "'rm' target '$arg' is outside the project directory ($RESOLVED_ROOT)."
-        fi
-      done
-    done <<< "$RM_CMDS"
-  fi
+    for arg in $cmd; do
+      [[ "$arg" == "rm" ]] && continue
+      [[ "$arg" == -* ]] && continue
+
+      if is_outside_project "$arg"; then
+        deny "'rm' target '$arg' is outside the project directory ($RESOLVED_ROOT)."
+      fi
+    done
+  done < <(printf '%s' "$COMMAND" | awk '{gsub(/&&/,"\n"); gsub(/\|\|/,"\n"); gsub(/;/,"\n"); print}')
   exit 0
 fi
 
