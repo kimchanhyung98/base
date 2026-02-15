@@ -22,10 +22,6 @@ claude: ## Claude Code 환경 설정
 		echo "[claude] .claude/.supermemory-claude/config.json not found"; \
 		exit 1; \
 	fi
-	@if [ "$(shell uname)" = "Darwin" ]; then \
-		echo "[claude] checking macOS permissions..."; \
-		bash .claude/hooks/check-permissions.sh || true; \
-	fi
 	@echo "[claude] downloading CLAUDE.md..."
 	@tmp_claude=$$(mktemp); \
 	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
