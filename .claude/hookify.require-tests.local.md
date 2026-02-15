@@ -9,7 +9,7 @@ conditions:
       pattern: npm test|yarn test|pnpm test|pytest|phpunit|pest|cargo test|go test
 ---
 
-# TODO : make test, make check 등으로 변경해서 사용 
+# TODO : 프로젝트에 맞는 테스트 명령어 추가 
 
 ⚠️ **Tests not detected in transcript**
 
