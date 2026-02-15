@@ -23,15 +23,24 @@ deny() {
 resolve_path() {
   local p="${1/#\~/$HOME}"
   [[ "$p" != /* ]] && p="$PROJECT_ROOT/$p"
+
   local dir
-  dir=$(cd "$(dirname "$p")" 2>/dev/null && pwd -P) && echo "$dir/$(basename "$p")" || echo "$p"
+  if dir=$(cd "$(dirname "$p")" 2>/dev/null && pwd -P); then
+    # cd 성공: .. 등 심볼릭 링크가 정상 해석됨
+    echo "$dir/$(basename "$p")"
+  else
+    # cd 실패(존재하지 않는 경로): .. 포함 시 traversal 우회 가능하므로 차단
+    [[ "$p" == *..* ]] && return 1
+    echo "$p"
+  fi
 }
 
 # 프로젝트 외부 경로 여부 판별
 is_outside_project() {
   local resolved
-  resolved=$(resolve_path "$1")
-  [[ "$resolved" != "$RESOLVED_ROOT"* ]]
+  resolved=$(resolve_path "$1") || return 0  # resolve 실패 시 차단
+  # trailing slash 추가로 prefix matching bypass 방지
+  [[ "$resolved/" != "$RESOLVED_ROOT/"* ]]
 }
 
 # Write|Edit: file_path 검증
