@@ -5,7 +5,20 @@
     "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
     "pr": ""
   },
-  "hooks": {},
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/scope-guard.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "defaultMode": "bypassPermissions",
     "deny": [
@@ -15,7 +28,8 @@
       "Read(**/*.p12)",
       "Read(**/*.pfx)",
       "Read(**/*.crt)",
-      "Read(**/*.cer)"
+      "Read(**/*.cer)",
+      "Edit(../**)"
     ]
   },
   "enabledPlugins": {
