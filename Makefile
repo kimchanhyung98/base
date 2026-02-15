@@ -22,21 +22,21 @@ claude: ## Claude Code 환경 설정
 		echo "[claude] .claude/.supermemory-claude/config.json not found"; \
 		exit 1; \
 	fi
-	@echo "[claude] downloading CLAUDE.md..."
+	@echo "[claude] downloading AGENT.md..."
 	@tmp_claude=$$(mktemp); \
 	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
 	if ! curl -fsSL "$$claude_url" -o "$$tmp_claude"; then \
 		rm -f "$$tmp_claude"; \
-		echo "[claude] CLAUDE.md download failed"; \
+		echo "[claude] AGENT.md download failed"; \
 		exit 1; \
 	fi; \
-	if [ -f CLAUDE.md ] && grep -qF "Behavioral guidelines to reduce common LLM coding mistakes" CLAUDE.md; then \
-		echo "[claude] CLAUDE.md already up to date"; \
-	elif [ -f CLAUDE.md ]; then \
-		printf '\n' >> CLAUDE.md; \
-		cat "$$tmp_claude" >> CLAUDE.md; \
+	if [ -f AGENT.md ] && grep -qF "Behavioral guidelines to reduce common LLM coding mistakes" AGENT.md; then \
+		echo "[claude] AGENT.md already up to date"; \
+	elif [ -f AGENT.md ]; then \
+		printf '\n' >> AGENT.md; \
+		cat "$$tmp_claude" >> AGENT.md; \
 	else \
-		mv "$$tmp_claude" CLAUDE.md; \
+		mv "$$tmp_claude" AGENT.md; \
 	fi; \
 	rm -f "$$tmp_claude"
 
