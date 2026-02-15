@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "name": "base-codex-template",
+  "description": "Language-agnostic base template configuration for AI coding assistants",
+  "respectGitignore": true,
+  "attribution": {
+    "commit": "Co-Authored-By: AI Assistant <noreply@ai.com>",
+    "pr": ""
+  },
+  "security": {
+    "scanForSecrets": true,
+    "scanForDebugCode": true,
+    "blockedPatterns": [
+      "(?i)(api[_-]?key|secret[_-]?key|password|token|auth[_-]?token)\\s*[=:]\\s*([\"'][^\"']{8,}[\"'])",
+      "console\\.log\\(",
+      "debugger;",
+      "var_dump\\(",
+      "dd\\(",
+      "print_r\\("
+    ],
+    "protectedPaths": [
+      ".env",
+      "**/*.pem",
+      "**/*.key",
+      "**/*.p12",
+      "**/*.pfx",
+      "**/*.crt",
+      "**/*.cer",
+      "**/credentials.json",
+      "**/auth.json"
+    ]
+  },
+  "codeQuality": {
+    "requireTests": false,
+    "requireDocumentation": false,
+    "followEditorConfig": true,
+    "respectExistingStyle": true
+  },
+  "blocking": {
+    "dependencyFolders": [
+      "node_modules",
+      "vendor",
+      ".venv",
+      "venv",
+      "__pycache__",
+      ".git"
+    ]
+  },
+  "language": "auto",
+  "contextWindow": {
+    "maxTokens": 128000,
+    "preserveHistory": true
+  },
+  "completion": {
+    "temperature": 0.7,
+    "topP": 0.95,
+    "frequencyPenalty": 0.0,
+    "presencePenalty": 0.0
+  },
+  "features": {
+    "autoComplete": true,
+    "inlineCompletion": true,
+    "codeExplanation": true,
+    "codeReview": true,
+    "refactoring": true,
+    "testGeneration": false,
+    "documentationGeneration": false
+  },
+  "hooks": {
+    "preCommit": [],
+    "postCommit": [],
+    "preGenerate": [],
+    "postGenerate": []
+  },
+  "preferences": {
+    "preferredLanguages": [],
+    "preferredFrameworks": [],
+    "codingStyle": "auto-detect",
+    "commentStyle": "auto-detect"
+  },
+  "memory": {
+    "enabled": true,
+    "path": ".codex/memory",
+    "cleanupPeriodDays": 21,
+    "maxMemorySize": "100MB"
+  },
+  "integrations": {
+    "git": {
+      "enabled": true,
+      "autoStage": false,
+      "commitMessageTemplate": "{{type}}: {{description}}"
+    },
+    "linters": {
+      "enabled": true,
+      "autoFix": false
+    },
+    "formatters": {
+      "enabled": true,
+      "autoFormat": false
+    }
+  },
+  "telemetry": {
+    "enabled": false,
+    "anonymousUsage": false
+  }
+}

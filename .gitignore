@@ -129,7 +129,9 @@ Icon?
 .augment/*
 .amazonq/*
 .codebuddy/*
-.codex/*
+.codex/config/config.json
+.codex/memory/*
+!.codex/memory/.gitkeep
 .cursor/*
 .gemini/*
 .kilocode/*
