@@ -1,4 +1,4 @@
-.PHONY: speckit help init check
+.PHONY: speckit help dev init claude check
 
 .DEFAULT_GOAL := help
 
@@ -18,18 +18,15 @@ speckit: ## Install speckit (default: claude)
 	fi; \
 	yes | specify init --here --ai "$$agent" --script sh
 
+dev: ## Setup all (init + claude + speckit)
+	@$(MAKE) init
+	@$(MAKE) claude
+	@$(MAKE) speckit
+
 init: ## Setup Project environment
 	@if [ ! -f .env ]; then \
 		echo "[init] .env file is required"; \
 		exit 1; \
-	fi
-	@if [ ! -f .claude/.supermemory-claude/config.json ]; then \
-		echo "[init] .claude/.supermemory-claude/config.json file is required"; \
-		exit 1; \
-	fi
-	@if [ "$(shell uname)" = "Darwin" ]; then \
-		echo "[init] Checking macOS permissions"; \
-		bash .claude/hooks/check-permissions.sh || true; \
 	fi
 	@if ! command -v docker >/dev/null 2>&1; then \
 		echo "[init] 'docker' not found"; \
@@ -47,26 +44,36 @@ init: ## Setup Project environment
 		echo "[init] Starting Docker containers"; \
 		docker compose up -d; \
 	fi
+	@echo "[init] Installing npm packages"
+	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
+
+claude: ## Setup Claude Code environment
+	@if [ ! -f .claude/.supermemory-claude/config.json ]; then \
+		echo "[claude] .claude/.supermemory-claude/config.json file is required"; \
+		exit 1; \
+	fi
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		echo "[claude] Checking macOS permissions"; \
+		bash .claude/hooks/check-permissions.sh || true; \
+	fi
 	@tmp_claude=$$(mktemp); \
 	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
 	if ! curl -fsSL "$$claude_url" -o "$$tmp_claude"; then \
 		rm -f "$$tmp_claude"; \
-		echo "[init] Failed to download CLAUDE.md from $$claude_url"; \
+		echo "[claude] Failed to download CLAUDE.md from $$claude_url"; \
 		exit 1; \
 	fi; \
 	if [ -f CLAUDE.md ] && grep -qF "Behavioral guidelines to reduce common LLM coding mistakes" CLAUDE.md; then \
-		echo "[init] CLAUDE.md already contains andrej-karpathy-skills content, skipping"; \
+		echo "[claude] CLAUDE.md already contains andrej-karpathy-skills content, skipping"; \
 	elif [ -f CLAUDE.md ]; then \
-		echo "[init] Appending CLAUDE.md from $$claude_url"; \
+		echo "[claude] Appending CLAUDE.md from $$claude_url"; \
 		printf '\n' >> CLAUDE.md; \
 		cat "$$tmp_claude" >> CLAUDE.md; \
 	else \
-		echo "[init] Creating CLAUDE.md from $$claude_url"; \
+		echo "[claude] Creating CLAUDE.md from $$claude_url"; \
 		mv "$$tmp_claude" CLAUDE.md; \
 	fi; \
 	rm -f "$$tmp_claude"
-	@echo "[init] Installing npm packages"
-	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
 
 check: ## Run tests and lint checks
 	@echo "[check] Running tests..."
