@@ -31,9 +31,12 @@ check_debug_code() {
 check_secrets() {
     local files=$(git diff --cached --name-only --diff-filter=ACMR || true)
     
+    # Pattern to detect hardcoded secrets: api_key, password, token with quoted values
+    local secret_pattern='(api[_-]?key|secret[_-]?key|password|token)[[:space:]]*[=:][[:space:]]*["'\''][^"'\'']{8,}'
+    
     if [ -n "$files" ]; then
         for file in $files; do
-            if grep -iE '(api[_-]?key|secret[_-]?key|password|token)[[:space:]]*[=:][[:space:]]*["\x27][^\x27"]{8,}' "$file" >/dev/null 2>&1; then
+            if grep -iE "$secret_pattern" "$file" >/dev/null 2>&1; then
                 echo "🔒 Possible hardcoded secret detected in: $file"
                 echo "   Please use environment variables instead"
             fi
