@@ -1,0 +1,20 @@
+{
+  "volume": 0.3,
+  "desktop_notifications": true,
+  "categories": {
+    "session.start": true,
+    "task.acknowledge": true,
+    "task.complete": true,
+    "task.error": true,
+    "input.required": true,
+    "resource.limit": true,
+    "user.spam": true
+  },
+  "annoyed_threshold": 3,
+  "annoyed_window_seconds": 10,
+  "silent_window_seconds": 3,
+  "active_pack": "sc_battlecruiser",
+  "pack_rotation": [],
+  "pack_rotation_mode": "off",
+  "session_ttl_days": 7
+}
