@@ -2,85 +2,83 @@
 
 .DEFAULT_GOAL := help
 
-help: ## Show available commands
+help: ## 사용 가능한 명령어 목록 출력
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-speckit: ## Install speckit (default: claude)
+speckit: ## speckit 설치 (기본값: claude)
 	@if ! command -v specify >/dev/null 2>&1; then \
-		echo "[speckit] 'specify' not found"; \
-		echo "[speckit] RUN: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git"; \
+		echo "[speckit] specify not found"; \
+		echo "[speckit] run: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git"; \
 		exit 1; \
 	fi
 	@agent="$(filter-out speckit,$(MAKECMDGOALS))"; \
 	if [ -z "$$agent" ]; then \
 		agent="claude"; \
-		echo "[speckit] Using default agent: claude"; \
 	fi; \
 	yes | specify init --here --ai "$$agent" --script sh
 
-dev: ## Setup all (init + claude + speckit)
+dev: ## 전체 설정 (init + claude + speckit)
 	@$(MAKE) init
 	@$(MAKE) claude
 	@$(MAKE) speckit
 
-init: ## Setup Project environment
+init: ## 프로젝트 환경 설정
 	@if [ ! -f .env ]; then \
-		echo "[init] .env file is required"; \
+		echo "[init] .env not found"; \
 		exit 1; \
 	fi
 	@if ! command -v docker >/dev/null 2>&1; then \
-		echo "[init] 'docker' not found"; \
+		echo "[init] docker not found"; \
 		exit 1; \
 	fi
 	@if ! docker compose version >/dev/null 2>&1; then \
-		echo "[init] 'docker compose' not found"; \
+		echo "[init] docker compose not found"; \
 		exit 1; \
 	fi
 	@if ! docker info >/dev/null 2>&1; then \
-		echo "[init] Docker is not running, please start Docker first"; \
+		echo "[init] docker is not running"; \
 		exit 1; \
 	fi
 	@if [ -f docker-compose.yml ]; then \
-		echo "[init] Starting Docker containers"; \
+		echo "[init] starting docker containers..."; \
 		docker compose up -d; \
 	fi
-	@echo "[init] Installing npm packages"
+	@echo "[init] installing npm packages..."
 	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
 
-claude: ## Setup Claude Code environment
+claude: ## Claude Code 환경 설정
 	@if [ ! -f .claude/.supermemory-claude/config.json ]; then \
-		echo "[claude] .claude/.supermemory-claude/config.json file is required"; \
+		echo "[claude] .claude/.supermemory-claude/config.json not found"; \
 		exit 1; \
 	fi
 	@if [ "$(shell uname)" = "Darwin" ]; then \
-		echo "[claude] Checking macOS permissions"; \
+		echo "[claude] checking macOS permissions..."; \
 		bash .claude/hooks/check-permissions.sh || true; \
 	fi
+	@echo "[claude] downloading CLAUDE.md..."
 	@tmp_claude=$$(mktemp); \
 	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
 	if ! curl -fsSL "$$claude_url" -o "$$tmp_claude"; then \
 		rm -f "$$tmp_claude"; \
-		echo "[claude] Failed to download CLAUDE.md from $$claude_url"; \
+		echo "[claude] CLAUDE.md download failed"; \
 		exit 1; \
 	fi; \
 	if [ -f CLAUDE.md ] && grep -qF "Behavioral guidelines to reduce common LLM coding mistakes" CLAUDE.md; then \
-		echo "[claude] CLAUDE.md already contains andrej-karpathy-skills content, skipping"; \
+		echo "[claude] CLAUDE.md already up to date"; \
 	elif [ -f CLAUDE.md ]; then \
-		echo "[claude] Appending CLAUDE.md from $$claude_url"; \
 		printf '\n' >> CLAUDE.md; \
 		cat "$$tmp_claude" >> CLAUDE.md; \
 	else \
-		echo "[claude] Creating CLAUDE.md from $$claude_url"; \
 		mv "$$tmp_claude" CLAUDE.md; \
 	fi; \
 	rm -f "$$tmp_claude"
 
-check: ## Run tests and lint checks
-	@echo "[check] Running tests..."
-	# Run test command here (e.g., npm test, pytest, go test, etc.)
-	@echo "[check] Running lint checks..."
-	# Run lint command here (e.g., npm run lint, flake8, golangci-lint, etc.)
-	@echo "[check] All checks passed."
+check: ## 테스트 및 린트 검사 실행
+	@echo "[check] running tests..."
+	# 테스트 명령어 추가 (예: npm test, pytest, go test 등)
+	@echo "[check] running lint..."
+	# 린트 명령어 추가 (예: npm run lint, flake8, golangci-lint 등)
+	@echo "[check] all checks passed"
 
 %:
 	@:
