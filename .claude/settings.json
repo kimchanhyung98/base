@@ -5,6 +5,19 @@
     "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
     "pr": ""
   },
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/*.crt)",
+      "Read(**/*.cer)",
+      "Edit(../**)"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -17,19 +30,6 @@
           }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "defaultMode": "bypassPermissions",
-    "deny": [
-      "Read(.env)",
-      "Read(**/*.pem)",
-      "Read(**/*.key)",
-      "Read(**/*.p12)",
-      "Read(**/*.pfx)",
-      "Read(**/*.crt)",
-      "Read(**/*.cer)",
-      "Edit(../**)"
     ]
   },
   "enabledPlugins": {
@@ -65,6 +65,7 @@
     "Notion@claude-plugins-official": false,
     "php-lsp@claude-plugins-official": false,
     "pinecone@claude-plugins-official": false,
+    "playground@claude-plugins-official": true,
     "playwright@claude-plugins-official": false,
     "plugin-dev@claude-plugins-official": false,
     "pr-review-toolkit@claude-plugins-official": true,
