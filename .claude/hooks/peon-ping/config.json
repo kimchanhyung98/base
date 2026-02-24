@@ -13,7 +13,10 @@
   "annoyed_threshold": 3,
   "annoyed_window_seconds": 10,
   "silent_window_seconds": 3,
-  "pack_rotation": ["sc_battlecruiser", "sc_scv"],
+  "pack_rotation": [
+    "sc_battlecruiser",
+    "sc_scv"
+  ],
   "pack_rotation_mode": "round-robin",
   "session_ttl_days": 7
 }
