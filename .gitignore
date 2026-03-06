@@ -4,6 +4,9 @@
 
 # Distribution / packaging
 .Python
+__pycache__/
+*.py[cod]
+*$py.class
 build/
 develop-eggs/
 dist/
@@ -44,6 +47,7 @@ hs_err_pid*
 ENV/
 venv/
 venv.bak/
+.venv/
 
 # Cloud
 .serverless/
@@ -144,12 +148,13 @@ $RECYCLE.BIN/
 .windsurf/*
 
 # Claude
+.claude/.supermemory-claude/config.json
 .claude/commands/speckit.*
 .claude/hooks/.permissions-checked
 .claude/memory/*
 !.claude/memory/.gitkeep
+.claude/plans
 .claude/settings.local.json
-.claude/.supermemory-claude/config.json
 
 # Codex
 .codex/commands/speckit.*
