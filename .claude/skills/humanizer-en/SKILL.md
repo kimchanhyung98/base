@@ -1,6 +1,5 @@
 ---
 name: humanizer-en
-version: 2.2.0
 description: |
     Remove signs of AI-generated writing from text. Use when editing or reviewing
     text to make it sound more natural and human-written. Based on Wikipedia's
@@ -40,6 +39,10 @@ When given text to humanize:
 
 Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as obvious as slop. Good writing has a
 human behind it.
+
+**Important:** This section applies to text meant to have a personal voice (blog posts, essays, commentary).
+For intentionally neutral text (release notes, API docs, technical references),
+preserve the impersonal tone and skip voice injection. Always match the intended register of the source.
 
 ### Signs of soulless writing (even if technically "clean"):
 
@@ -309,6 +312,8 @@ showcase, tapestry (abstract noun), testament, underscore (verb), valuable, vibr
 ### 15. Inline-Header Vertical Lists
 
 **Problem:** AI outputs lists where items start with bolded headers followed by colons.
+Note: preserve deliberate structure in procedural/instructional content (setup guides, troubleshooting steps).
+Only flatten decorative formatting, not functional step boundaries.
 
 **Before:**
 > - **User Experience:** The user experience has been significantly improved with a new interface.
@@ -470,14 +475,3 @@ Provide:
 2. "What makes the below so obviously AI generated?" (brief bullets)
 3. Final rewrite
 4. A brief summary of changes made (optional, if helpful)
-
----
-
-## Reference
-
-This skill is based on [Wikipedia:Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing),
-maintained by WikiProject AI Cleanup. The patterns documented there come from observations of thousands of instances of
-AI-generated text on Wikipedia.
-
-Key insight from Wikipedia: "LLMs use statistical algorithms to guess what should come next. The result tends toward the
-most statistically likely result that applies to the widest variety of cases."
