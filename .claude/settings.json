@@ -82,16 +82,9 @@
     "swift-lsp@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": false,
     "vercel@claude-plugins-official": false,
-    "agent-browser@vercel-labs": false,
-    "claude-supermemory@supermemory-plugins": true
+    "agent-browser@vercel-labs": false
   },
   "extraKnownMarketplaces": {
-    "supermemory-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "supermemoryai/claude-supermemory"
-      }
-    },
     "vercel-labs": {
       "source": {
         "source": "github",
