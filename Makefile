@@ -18,10 +18,6 @@ check: ## 테스트 및 린트 검사 실행
 	@echo "[check] all checks passed"
 
 claude: ## Claude Code 환경 설정
-	@if [ ! -f .claude/.supermemory-claude/config.json ]; then \
-		echo "[claude] .claude/.supermemory-claude/config.json not found"; \
-		exit 1; \
-	fi
 	@echo "[claude] downloading AGENT.md..."
 	@tmp_claude=$$(mktemp); \
 	claude_url="https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md"; \
