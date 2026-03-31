@@ -82,13 +82,20 @@
     "swift-lsp@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": false,
     "vercel@claude-plugins-official": false,
-    "agent-browser@vercel-labs": false
+    "agent-browser@vercel-labs": false,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "vercel-labs": {
       "source": {
         "source": "github",
         "repo": "vercel-labs/agent-browser"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
       }
     }
   },
