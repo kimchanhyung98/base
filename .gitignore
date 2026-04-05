@@ -147,7 +147,7 @@ $RECYCLE.BIN/
 
 # Claude
 **/CLAUDE.md
-!CLAUDE.md
+!/CLAUDE.md
 .claude/commands/speckit.*
 .claude/hooks/.permissions-checked
 .claude/memory/*
