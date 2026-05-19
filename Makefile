@@ -1,13 +1,14 @@
-.PHONY: help dev check claude init speckit
+.PHONY: help dev check claude init skills speckit
 
 .DEFAULT_GOAL := help
 
 help: ## 사용 가능한 명령어 목록 출력
 	@awk 'BEGIN {FS = ":.*##"; printf "\n사용법:\n  make \033[36m<target>\033[0m\n\n명령어:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-dev: ## 전체 설정 (init + claude + speckit)
+dev: ## 전체 설정 (init + claude + skills + speckit)
 	@$(MAKE) init
 	@$(MAKE) claude
+	@$(MAKE) skills
 	@$(MAKE) speckit
 
 check: ## 테스트 및 린트 검사 실행
@@ -59,6 +60,29 @@ init: ## 프로젝트 환경 설정
 	fi
 	@echo "[init] installing npm packages..."
 	@docker run --rm -v $$(pwd):/app -w /app node:22-alpine sh -c "apk add --no-cache git && npm install"
+
+skills: ## 공통 .skills를 AI provider skill 경로에 연결
+	@if [ ! -d ".skills" ]; then \
+		echo "[skills] .skills not found"; \
+		exit 1; \
+	fi
+	@found=0; \
+	for skill_dir in .skills/*; do \
+		if [ ! -d "$$skill_dir" ]; then \
+			continue; \
+		fi; \
+		found=1; \
+		name=$$(basename "$$skill_dir"); \
+		for provider_dir in .agents/skills .claude/skills; do \
+			mkdir -p "$$provider_dir"; \
+			rm -rf "$$provider_dir/$$name"; \
+			ln -s "../../.skills/$$name" "$$provider_dir/$$name"; \
+			echo "[skills] linked $$provider_dir/$$name"; \
+		done; \
+	done; \
+	if [ "$$found" -eq 0 ]; then \
+		echo "[skills] no skills found in .skills"; \
+	fi
 
 speckit: ## speckit 설치 (AGENT=claude, 예: make speckit AGENT=copilot)
 	@if ! command -v specify >/dev/null 2>&1; then \
