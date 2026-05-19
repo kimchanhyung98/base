@@ -148,19 +148,14 @@ $RECYCLE.BIN/
 # Claude
 **/CLAUDE.md
 !/CLAUDE.md
-.claude/commands/speckit.*
-.claude/hooks/.permissions-checked
-.claude/memory/*
-!.claude/memory/.gitkeep
-.claude/plans
-.claude/settings.local.json
-.claude/scheduled_tasks.lock
-.remember
+.claude/*
+!.claude/settings.json
+!.claude/hookify.*.local.md
+!.claude/hooks/
+!.claude/hooks/**
 
 # Codex
 .codex/commands/speckit.*
-.codex/memory/*
-!.codex/memory/.gitkeep
 
 # GitHub
 .github/agents/*
@@ -178,3 +173,5 @@ specs/
 
 # etc
 .cmux
+.omx
+.remember
