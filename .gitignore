@@ -133,12 +133,18 @@ Icon?
 $RECYCLE.BIN/
 
 # AI Agent
-.agents/*
-.augment/*
+.aider*
+.air/*
 .amazonq/*
+.amp/*
+.antigravity/*
+.augment/*
+.cline/*
 .codebuddy/*
+.crush/logs/
 .cursor/*
-.gemini/*
+.devin/*
+.goose/*
 .kilocode/*
 .opencode/*
 .qwen/*
@@ -155,7 +161,14 @@ $RECYCLE.BIN/
 !.claude/hooks/**
 
 # Codex
-.codex/commands/speckit.*
+.agents/*
+.codex/*
+!.codex/config.toml
+
+# Gemini
+.gemini/*
+!.gemini/GEMINI.md
+!.gemini/settings.json
 
 # GitHub
 .github/agents/*
