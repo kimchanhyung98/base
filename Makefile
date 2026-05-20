@@ -66,23 +66,18 @@ skills: ## 공통 .skills를 AI provider skill 경로에 연결
 		echo "[skills] .skills not found"; \
 		exit 1; \
 	fi
-	@found=0; \
-	for skill_dir in .skills/*; do \
-		if [ ! -d "$$skill_dir" ]; then \
-			continue; \
+	@for provider_dir in $(or $(SKILL_PROVIDER_DIRS),.agents .claude); do \
+		mkdir -p "$$provider_dir"; \
+		target="$$provider_dir/skills"; \
+		if [ ! -e "$$target" ] && [ ! -L "$$target" ]; then \
+			ln -s ../.skills "$$target"; \
 		fi; \
-		found=1; \
-		name=$$(basename "$$skill_dir"); \
-		for provider_dir in .agents/skills .claude/skills; do \
-			mkdir -p "$$provider_dir"; \
-			rm -rf "$$provider_dir/$$name"; \
-			ln -s "../../.skills/$$name" "$$provider_dir/$$name"; \
-			echo "[skills] linked $$provider_dir/$$name"; \
-		done; \
-	done; \
-	if [ "$$found" -eq 0 ]; then \
-		echo "[skills] no skills found in .skills"; \
-	fi
+		if [ "$$(readlink "$$target" 2>/dev/null)" != "../.skills" ]; then \
+			echo "[skills] failed to link $$target"; \
+			exit 1; \
+		fi; \
+		echo "[skills] linked $$target"; \
+	done
 
 speckit: ## speckit 설치 (AGENT=claude, 예: make speckit AGENT=copilot)
 	@if ! command -v specify >/dev/null 2>&1; then \
