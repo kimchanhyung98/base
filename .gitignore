@@ -156,9 +156,7 @@ $RECYCLE.BIN/
 !/CLAUDE.md
 .claude/*
 !.claude/settings.json
-!.claude/hookify.*.local.md
-!.claude/hooks/
-!.claude/hooks/**
+!.claude/hookify.*.md
 
 # Codex
 .agents/*
