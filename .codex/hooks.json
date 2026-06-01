@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(git rev-parse --show-toplevel)/.codex/hooks/block_git_origin_push.sh\"",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.hooks/block_git_origin_push.sh\"",
             "timeout": 10,
             "statusMessage": "Checking git push origin"
           }
