@@ -88,7 +88,7 @@ allow_login_shell = false
 # - read-only(기본값)
 # - workspace-write
 # - danger-full-access(sandbox 없음, 매우 위험)
-#sandbox_mode = "danger-full-access"
+sandbox_mode = "danger-full-access"
 # 기본으로 적용할 named permissions profile입니다. 내장값:
 # :read-only | :workspace | :danger-full-access
 # "workspace" 같은 사용자 정의 이름은 [permissions.workspace]를 함께 정의할 때만 사용하세요.
@@ -153,7 +153,7 @@ default_permissions = "workspace"
 # cached는 웹 검색 cache(OpenAI가 관리하는 index)에서 결과를 제공합니다.
 # cached는 미리 색인된 결과를 반환하고, live는 최신 데이터를 가져옵니다.
 # --yolo 또는 다른 full access sandbox 설정을 사용하면 web search 기본값은 live입니다.
-#web_search = "live"
+web_search = "live"
 # Config profile은 CODEX_HOME 아래 별도 파일입니다.
 # 예: ~/.codex/ci.config.toml, codex --profile ci로 선택합니다.
 # 개발 중인 feature flag가 켜졌을 때 표시되는 경고를 숨깁니다.
