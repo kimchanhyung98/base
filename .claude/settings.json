@@ -129,7 +129,7 @@
   "language": "korean",
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
-  "model": "fable",
+  "model": "opus",
   "effortLevel": "xhigh",
   "companyAnnouncements": [
     "\nWelcome to {base}!\nRun 'make init' on first launch."
