@@ -182,6 +182,6 @@ $RECYCLE.BIN/
 agent-os/
 
 # etc
-.cmux
-.omx
+.cmux/
+.omx/
 .remember
