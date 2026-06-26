@@ -7,7 +7,7 @@ hook_command_text() {
 }
 
 hook_normalized_command() {
-  hook_command_text | tr '\n\t' '  ' | sed -E 's/[[:space:]]+/ /g'
+  hook_command_text | tr '\n\t' '; ' | sed -E 's/[[:space:]]+/ /g'
 }
 
 hook_deny() {
