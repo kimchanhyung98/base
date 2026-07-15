@@ -1,11 +1,12 @@
 name: PR Title Check
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - edited
       - synchronize
+      - reopened
       - labeled
       - unlabeled
 
@@ -40,7 +41,7 @@ jobs:
 
           # Disallow uppercase scopes
           disallowScopes: |
-            [A-Z]+
+            .*[A-Z].*
 
           # Work in progress PR support
           wip: true
@@ -51,8 +52,8 @@ jobs:
             ignore-semantic-pull-request
 
           # Ensure the subject doesn't start with an uppercase character
-          subjectPattern: ^[a-z].*$
+          subjectPattern: ^(?![A-Z]).+$
           subjectPatternError: |
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
-            starts with a lowercase character.
+            does not start with an uppercase English character.
