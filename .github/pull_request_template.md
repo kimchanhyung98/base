@@ -11,3 +11,11 @@ Examples:
 - fix(payment): resolve duplicate transaction issue
 - refactor(user): extract service layer from controllers
 -->
+
+## Summary
+
+<!-- What changed and why? -->
+
+## Verification
+
+<!-- List the commands or checks you ran, or explain why verification was not needed. -->
