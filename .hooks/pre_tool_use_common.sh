@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-HOOK_COMMAND_BOUNDARY='(^|[;&|][[:space:]]*)'
+# Shared by the guard scripts that source this file.
+# shellcheck disable=SC2034
+HOOK_COMMAND_BOUNDARY="(^|[;&|()'\"][[:space:]]*)"
+# shellcheck disable=SC2034
+HOOK_COMMAND_END="([[:space:];&|()'\"]|$)"
 
 hook_command_text() {
-  jq -r '.tool_input.command // ""'
+  jq -jr '.tool_input.command // ""'
 }
 
 hook_normalized_command() {
