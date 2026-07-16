@@ -3,8 +3,8 @@
 Please ensure your PR title follows the Conventional Commits format:
 <type>(<scope>): <description>
 
-Types: feat, fix, docs, refactor, test, chore, perf, ci, build, style, revert
-Example scopes (recommendations only; any lowercase scope is accepted by CI): user, product, order, payment, auth, api, database, middleware, service, controller, model, docker, deps, config, github
+Example types (recommendations only; any lowercase type is accepted): feat, fix, docs, refactor, test, chore, perf, ci, build, style, revert
+Example scopes (recommendations only; names are not limited to this list): user, product, order, payment, auth, api, database, middleware, service, controller, model, docker, deps, config, github
 
 Examples:
 - feat(user): add social login support

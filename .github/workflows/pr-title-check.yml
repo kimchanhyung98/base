@@ -36,12 +36,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          # Validate the format without restricting type or scope to a fixed list.
+          types: |
+            [a-z]+
+
           # Scope is optional (allows both `type: title` and `type(scope): title`)
           requireScope: false
 
-          # Disallow uppercase scopes
-          disallowScopes: |
-            .*[A-Z].*
+          # Match the same `type(scope): text` structure as the local validator.
+          headerPattern: '^([a-z]+)(?:\(([a-z0-9_-]+)\))?:\s+(\S.*)$'
+          headerPatternCorrespondence: type, scope, subject
 
           # Work in progress PR support
           wip: true
