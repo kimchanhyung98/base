@@ -196,6 +196,14 @@ $RECYCLE.BIN/
 .agent-os/
 agent-os/
 
+# Playwright
+.agent-browser/
+.browser/
+.chrome/
+.next-browser/
+.playwright/
+.playwright-mcp/
+
 # etc
 .cmux/
 .omx/
