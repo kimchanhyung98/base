@@ -20,7 +20,7 @@
 
 # Primary model used by Codex. Recommended example for most users: "gpt-5.6".
 
-model = "gpt-5.6-sol"
+model = "gpt-6-astra"
 
 # Communication style for supported models. Allowed values: none | friendly | pragmatic
 
@@ -68,7 +68,7 @@ model = "gpt-5.6-sol"
 
 # Reasoning effort: minimal | low | medium | high | xhigh | max | ultra (model-dependent)
 
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 
 # Optional plan-mode override: none | minimal | low | medium | high | xhigh | max | ultra (model-dependent)
 
