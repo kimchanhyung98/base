@@ -82,7 +82,7 @@ Inspect the available Jev MCP tools and their descriptions, then choose and use 
 
 ## 7. Documentation Writing
 
-When writing or editing documentation, aim for "80% of the way to ASD-STE100 Simplified Technical English," as suggested in [Karpathy's post](https://x.com/karpathy/status/2105819303471976479). Treat this as a readability goal, not a measured compliance score.
+When writing or editing documentation, apply the clarity principles of ASD-STE100 at roughly an 80% level. Prioritize natural Korean phrasing and technical accuracy. Treat 80% as a readability goal, not a measured compliance score.
 
 - Write documentation in Korean. Prioritize natural Korean phrasing and technical accuracy.
 - Use short, direct sentences with clear subjects and active verbs. Keep one idea per sentence and one topic per paragraph.
